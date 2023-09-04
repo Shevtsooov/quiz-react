@@ -1,0 +1,59 @@
+.game {
+  &__progress {
+  height: 10px;
+  border-radius: 30px;
+  background-color: rgb(232, 232, 232);
+  margin-bottom: 25px;
+
+    &--inner {
+      height: 100%;
+      border-radius: 30px;
+      width: 80%;
+      background: rgb(18, 231, 48);
+      transition: all 0.3s ease-in-out;
+      background: linear-gradient(90deg, rgba(18, 231, 48, 1) 0%, rgba(0, 212, 255, 1) 100%);
+    }
+  }
+
+  &__question--title {
+    margin: 0;
+
+    @media (max-width: 400px) {
+      font-size: 18px;
+    }
+  }
+
+  &__question_list {
+    list-style: none;
+    padding: 0;
+  }
+
+  &__question {
+    padding: 15px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+
+    &--clicked-correct {
+      background-color: #30d15b;
+      color: #fff;
+    }
+
+    &--clicked-inCorrect {
+      background-color: #de5454;
+      color: #fff;
+    }
+
+    @media (max-width: 400px) {
+      font-size: 14px;
+      padding: 10px;
+      margin-bottom: 3px;
+    }
+
+    &:hover {
+      border: 2px solid rgba(0, 0, 0, 0.3);
+    }
+  }
+}

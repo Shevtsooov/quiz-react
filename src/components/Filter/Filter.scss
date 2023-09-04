@@ -1,0 +1,65 @@
+.filterPage {
+  text-align: center;
+
+  @media (max-width: 400px) {
+    font-size: 16px;
+    // height: 320px;
+  }
+
+  &__header {
+    margin-bottom: 0;
+    
+    @media (max-width: 400px) {
+      font-size: 20px;
+    }
+  }
+
+  &__categories {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 20px;
+  }
+
+  &__button {
+    font-weight: bold;
+    font-family: 'Nunito', sans-serif;
+    border-radius: 30px;
+    border: 0;
+    padding: 15px 30px;
+    font-size: 20px;
+    background-color: darken(#ff006e, 3%);
+    color: #fff;
+    margin-top: 20px;
+    
+    cursor: pointer;
+
+    transition: background 0.8s;
+
+    @media (max-width: 400px) {
+      font-size: 16px;
+      padding: 10px 15px;
+      margin-top: 5px;
+    }
+
+    &--next {
+      background-color: #6a5be2;
+    }
+
+    &--chosen {
+      background-color: #6a5be2;
+    }
+  }
+
+  &__warning {
+    color: #ff006e;
+    font-size: 0;
+    transition: font-size 0.8s;
+
+    &--visible {
+      font-size: 18px;
+      margin-top: 30px;
+    }
+  }
+}
