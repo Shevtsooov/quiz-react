@@ -17,6 +17,7 @@
 
   &__question--title {
     margin: 0;
+    margin-bottom: 30px;
 
     @media (max-width: 400px) {
       font-size: 18px;
@@ -29,6 +30,7 @@
   }
 
   &__question {
+    user-select: none;
     padding: 15px;
     border: 2px solid rgba(0, 0, 0, 0.1);
     border-radius: 15px;

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import cn from 'classnames';
 
 type Props = {
-  setChosenCategories: (categories: string[]) => void,
+  setChosenCategories: React.Dispatch<React.SetStateAction<string[]>>,
   chosenCategories: string[],
   setPage: (page: number) => void,
 }

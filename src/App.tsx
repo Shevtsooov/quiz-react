@@ -1,59 +1,29 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
+
 import './App.scss';
 
-import { Game } from './components/Game/Game';
-import { Filter } from './components/Filter/Filter';
-import { Quantity } from './components/Quantity/Quantity';
-import { filterQuestions, getRandomQuestions } from './helpers/filterQuestions';
-import { Result } from './components/Result/Result';
+import { Header } from './components/Header/Header';
+import { Homepage } from './pages/Homepage/Homepage';
+import { QuestionList } from './pages/QuestionList/QuestionList';
+import { PageNotFound } from './pages/NotFoundPage/NotFoundPage';
+import { AddNewQuestion } from './pages/AddNewQuestion/AddNewQuestion';
 
 export const App: React.FC = () => {
-  const [step, setStep] = useState(0);
-  const [page, setPage] = useState(0);
-  const [correct, setCorrect] = useState(0);
-  const [chosenCategories, setChosenCategories] = useState<string[]>([]);
-  const [quantity, setQuantity] = useState(0);
-
-  const filteredQuestions = useMemo(() => filterQuestions(chosenCategories), [chosenCategories]);
-  const readyQuestions = useMemo(() => getRandomQuestions(filteredQuestions, quantity), [filteredQuestions, quantity]);
-
- const question = readyQuestions[step];
- 
-  const isGameOver = step === readyQuestions.length && page > 1;
 
   return (
-    <div className="App">
-      {page === 0 && (
-      <Filter 
-        setChosenCategories={setChosenCategories}
-        chosenCategories={chosenCategories}
-        setPage={setPage}
-      />
-    )}
-      {page === 1 && (
-      <Quantity 
-        setQuantity={setQuantity}
-        quantity={quantity}
-        setPage={setPage}
-      />
-    )}
-      {page > 1 && question && (
-        <Game
-        readyQuestions={readyQuestions}
-          question={question}
-          step={step}
-          setStep={setStep}
-          correct={correct}
-          setCorrect={setCorrect}
-        />
-      )}
+    <>
+      <Header />
 
-      {isGameOver && (
-        <Result
-          readyQuestions={readyQuestions}
-          correct={correct}
-        />
-      )} 
-    </div>
+      <Routes>
+        <Route path="home" element={<Homepage />} />
+        <Route path="/" element={<Navigate to="home" />} />
+        <Route path="questions" element={<QuestionList />} />
+
+        <Route path="new-question" element={<AddNewQuestion />} />
+
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
+    </>  
   );
 }

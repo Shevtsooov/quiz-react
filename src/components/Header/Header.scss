@@ -1,0 +1,40 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 50px;
+  
+  height: 70px;
+  background-color: #29035b;
+
+  &__logo {
+    width: 100px;
+  }
+
+  &__nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &-item {
+      display: block;
+      background-repeat: no-repeat;
+      width: 40px;
+      height: 40px;
+
+      margin-left: 40px;
+
+      &:hover {
+        background-color: #16ae10;
+      }
+    }
+
+    &-list {
+      background-image: url('../../assets/images/list-white.svg');
+    }
+
+    &-new_question {
+      background-image: url('../../assets/images/plus-white.svg');
+    }
+  }
+}
