@@ -12,7 +12,7 @@ export const geography = {
     correct: 1,
     category: 'geography',
     categoryName: 'Географія',
-    difficulty: null
+    difficulty: 'Легко'
   },
   {
     title: 'Яка найбільша пустеля світу?',

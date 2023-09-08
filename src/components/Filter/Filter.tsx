@@ -2,6 +2,7 @@ import './Filter.scss';
 import React, { useState } from 'react';
 
 import cn from 'classnames';
+import { categoryNames } from '../../helpers/PossibleCategories';
 
 type Props = {
   setChosenCategories: React.Dispatch<React.SetStateAction<string[]>>,
@@ -47,42 +48,23 @@ export const Filter: React.FC<Props> = ({
     setPage(page);
   }
 
-  const categories = [
-    {
-      title: 'Історія',
-      nickname: 'history',
-    },
-    {
-      title: 'Спорт',
-      nickname: 'sport',
-    },
-    {
-      title: 'Географія',
-      nickname: 'geography',
-    },
-    {
-      title: 'Інші питання',
-      nickname: 'others',
-    },
-  ]
-
   return (
     <div className="filterPage">
       <h2
       className="filterPage__header"
       >
-        Будь ласка, оберіть категорії питань:
+        Будь ласка, оберіть одну або декілька категорій:
       </h2>
       <div className="filterPage__categories">
-        {categories.map(category => (
+        {categoryNames.map(category => (
           <button
           className={cn('filterPage__button', {
-            'filterPage__button--chosen': chosenCategories.includes(category.nickname),
+            'filterPage__button--chosen': chosenCategories.includes(category),
           })}
-          key={category.nickname}
-          onClick={() => {handleChooseCategory(category.nickname)}}
+          key={category}
+          onClick={() => {handleChooseCategory(category)}}
         >
-          {category.title}
+          {category}
         </button>
         ))}
       </div>

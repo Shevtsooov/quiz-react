@@ -4,7 +4,7 @@ import { sport } from '../data/sport';
 import { others } from '../data/others';
 import { Question } from '../components/types/question';
 
-const categories = [history, geography, sport, others];
+export const categories = [history, geography, sport, others];
 
 export const filterQuestions = (chosenCategories: string[]): Question[] => {
   let questions: Question[] = [];

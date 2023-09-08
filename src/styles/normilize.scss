@@ -8,15 +8,6 @@ html {
   font-family: 'Nunito', sans-serif;
 }
 
-input,
-textarea,
-button,
-select,
-li,
-ul,
-a {
-    -webkit-tap-highlight-color: transparent;
-}
 
 ul {
   list-style-type: none;
@@ -24,6 +15,6 @@ ul {
   padding: 0;
 }
 
-body {
+body, h1, input {
   margin: 0;
 }
