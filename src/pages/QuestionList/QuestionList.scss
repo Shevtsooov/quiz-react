@@ -1,5 +1,5 @@
 .list {
-  width: 70%;
+  width: 80%;
   padding: 40px 40px;
   margin: 0 auto;
   margin-top: 50px;
@@ -77,10 +77,35 @@
       margin-bottom: 15px;
 
       border-radius: 30px;
-      border: 1px solid rgb(228, 225, 225);
+      border: 1px solid rgb(222, 222, 222);
 
+      background-color: #fff;
+      // text-align: left;
       outline: none;
       resize: none;
+      cursor: pointer;
+
+      font-size: 12px;
+
+      transition: background-color 0.5s;
+
+      &--easy {
+        background-color: #16af05;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      &--medium {
+        background-color: #d2d200;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      &--hard {
+        background-color: #ce0000;
+        color: #fff;
+        font-weight: 600;
+      }
     }
   }
 }
@@ -125,6 +150,8 @@
       background-color: #f7f5f5;
       border-radius: 40px;
       padding: 5px 90px 5px 5px;
+      transition: height 0.5s;
+
 
       &_text {
         padding: 0 50px 0 20px;
@@ -132,13 +159,21 @@
 
       &_answers {
         padding-left: 40px;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
+
+        &--item {
+          margin-bottom: 5px;
+
+          &::before {
+            content: "❓ ";
+          }
+        }
       }
     }
 
     &_buttons {
       position: absolute;
-      top: 20px;
+      top: 17px;
       right: 10px;
 
       &--general {
@@ -148,32 +183,35 @@
         border-radius: 30px;
         border: 0;
         margin-right: 10px;
+
+        background-repeat: no-repeat;
+        background-size: contain;
       }
 
       &--answers {
-        background-color: #81c3e7;
+        background-image: url('../../assets/images/answers.svg');
         cursor: pointer;
 
         &:hover {
-          background-color: #59b3e4;
+          background-image: url('../../assets/images/answers-hover.svg');
         }
       }
 
       &--edit {
-        background-color: #f0a84bf8;
+        background-image: url('../../assets/images/edit.svg');
         cursor: pointer;
 
         &:hover {
-          background-color: #f09a28f8;
+          background-image: url('../../assets/images/edit-hover.svg');
         }
       }
 
       &--remove {
-        background-color: #e86969;
+        background-image: url('../../assets/images/remove.svg');
         cursor: pointer;
 
         &:hover {
-          background-color: #e63b3b;
+          background-image: url('../../assets/images/remove-hover.svg');
         }
       }
     }

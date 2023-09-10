@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { geography } from '../../data/geography';
 import './QuestionList.scss';
+import { Sorting } from '../../components/Sorting/Sorting';
+import classNames from 'classnames';
 
 
 export const QuestionList: React.FC = () => {
   const [currentQuestion, setCurrentQuestion] = useState<string>('');
   const [query, setQuery] = useState('');
   const [showAnswers, setShowAnswers] = useState<string[]>([]);
+  const [filterDifficulty, setFilterDifficulty] = useState('Складність')
 
   const handleSearch = (search: string) => {
     setQuery(search);
@@ -35,8 +38,28 @@ export const QuestionList: React.FC = () => {
   }
 
   const filteredQuestions = geography.questions.filter(question => (
-    question.title.toLowerCase().includes(query.toLowerCase())
-  ))
+    question.title.toLowerCase().includes(query.toLowerCase().trim())
+  ));
+
+  const handleDifficulty = () => {
+    if (filterDifficulty === 'Складність') {
+      setFilterDifficulty('Легко');
+
+      return;
+    }
+    if (filterDifficulty === 'Легко') {
+      setFilterDifficulty('Нормально');
+
+      return;
+    }
+    if (filterDifficulty === 'Нормально') {
+      setFilterDifficulty('Складно');
+
+      return;
+    }
+
+    setFilterDifficulty('Складність');
+  }
 
   return (
     <div className='list'>
@@ -61,16 +84,20 @@ export const QuestionList: React.FC = () => {
           )}
         </div>
 
+        
+        <Sorting />
+          
+        <button
+          className={classNames('list__filter_difficulty', {
+            'list__filter_difficulty--easy' : filterDifficulty === 'Легко',
+            'list__filter_difficulty--medium' : filterDifficulty === 'Нормально',
+            'list__filter_difficulty--hard' : filterDifficulty === 'Складно',
+          })}
+          onClick={handleDifficulty}
+        >
+          {filterDifficulty}
+        </button>
 
-        <input
-          type="text"
-          className='list__filter_category'
-        />
-
-        <input
-          type="text"
-          className='list__filter_difficulty'
-        />
       </div>
 
       <table className='table'>
@@ -98,7 +125,7 @@ export const QuestionList: React.FC = () => {
                 {showAnswers.includes(question.title) && (
                   <ul className='table__body_title_answers'>
                     {question.answers.map(answer => (
-                    <li>
+                    <li className='table__body_title_answers--item'>
                       {answer}
                     </li>
                     ))}
@@ -113,19 +140,16 @@ export const QuestionList: React.FC = () => {
                     className='table__body_buttons--general table__body_buttons--answers'
                     onClick={() => handleShowAnswers(question.title)}
                   >
-                    A
                   </button>
                   <button
                     className='table__body_buttons--general  table__body_buttons--edit'
                     // onClick={}
                   >
-                    E
                   </button>
                   <button
                     className='table__body_buttons--general  table__body_buttons--remove'
                     // onClick={}
                   >
-                    R
                   </button>
                 </div>
                 )}
