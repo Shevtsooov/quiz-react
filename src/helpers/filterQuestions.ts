@@ -1,22 +1,30 @@
-import { geography } from '../data/geography';
-import { history } from '../data/history';
-import { sport } from '../data/sport';
-import { others } from '../data/others';
+// import { geography } from '../data/geography';
+// import { history } from '../data/history';
+// import { sport } from '../data/sport';
+// import { others } from '../data/others';
 import { Question } from '../components/types/question';
+import { getKeyByValue } from './getKeyByValue';
+import { possibleCategories } from './PossibleCategories';
 
-export const categories = [history, geography, sport, others];
+// export const categories = [history, geography, sport, others];
 
-export const filterQuestions = (chosenCategories: string[]): Question[] => {
+export const filterQuestions = (
+  questionsFromServer: Question[] | undefined,
+  chosenCategories: string[],
+  ): Question[] => {
   let questions: Question[] = [];
+
+  const categoriesKeys = chosenCategories.map(category => getKeyByValue(possibleCategories, category));
+
   
-  for (let i = 0; i < chosenCategories.length; i++) {
-    const chosenCategory = chosenCategories[i];
-    const category = categories.find(category => category.title === chosenCategory);
+  for (let i = 0; i < categoriesKeys.length; i++) {
+    const chosenCategory = categoriesKeys[i];
+    const questionsByCategory = questionsFromServer?.filter(question => question.category === chosenCategory);
     
-    if (category) {
+    if (questionsByCategory) {
       questions = [
-        ...questions,
-        ...category.questions,
+        ...questionsByCategory,
+        ...questions
       ];
     }
   }

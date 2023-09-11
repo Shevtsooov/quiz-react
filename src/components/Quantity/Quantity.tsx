@@ -2,18 +2,20 @@ import React, { useState } from 'react';
 import cn from 'classnames';
 
 import './Quantity.scss';
+import { useAppDispatch } from '../../app/store';
+import { increment } from '../../features/page.slice';
 
 type Props = {
   setQuantity: (quantity: number) => void
   quantity: number
-  setPage: (index: number) => void
 }
 
 export const Quantity: React.FC<Props> = ({
   setQuantity,
   quantity,
-  setPage,
 }) => {
+  const dispatch = useAppDispatch();
+
   const [isWarning, setIsWarning] = useState(false);
 
   const handleChooseQuantity = (chosenQuantity: number) => {
@@ -36,7 +38,7 @@ export const Quantity: React.FC<Props> = ({
       return;
     }
 
-    setPage(page);
+    dispatch(increment());
   }
 
   return (

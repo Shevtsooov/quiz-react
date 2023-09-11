@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { Filter } from '../../components/Filter/Filter';
 import { Quantity } from '../../components/Quantity/Quantity';
@@ -8,20 +8,30 @@ import { Result } from '../../components/Result/Result';
 import { filterQuestions, getRandomQuestions } from '../../helpers/filterQuestions';
 
 import './Homepage.scss';
+import { useAppSelector } from '../../app/store';
+import { useGetAllQuestionsQuery } from '../../services/questions.service';
 
 export const Homepage: React.FC = () => {
-  const [step, setStep] = useState(0);
-  const [page, setPage] = useState(0);
+  const step = useAppSelector((state) => state.step.value);
+  const page = useAppSelector((state) => state.page.value);
+  const { data: questions } = useGetAllQuestionsQuery();
+  
   const [correct, setCorrect] = useState(0);
   const [chosenCategories, setChosenCategories] = useState<string[]>([]);
   const [quantity, setQuantity] = useState(0);
 
-  const filteredQuestions = useMemo(() => filterQuestions(chosenCategories), [chosenCategories]);
+  // useEffect(() => {
+  //   questionApi.getAll()
+  //   .then((response) => dispatch(setQuestions(response)));
+  // })
+
+  const filteredQuestions = useMemo(() => filterQuestions(questions, chosenCategories), [chosenCategories, questions]);
   const readyQuestions = useMemo(() => getRandomQuestions(filteredQuestions, quantity), [filteredQuestions, quantity]);
 
- const question = readyQuestions[step];
- 
+  const question = readyQuestions[step];
+
   const isGameOver = step === readyQuestions.length && page > 1;
+
 
   return (
     <div className="gameboard">
@@ -29,22 +39,18 @@ export const Homepage: React.FC = () => {
         <Filter 
           setChosenCategories={setChosenCategories}
           chosenCategories={chosenCategories}
-          setPage={setPage}
         />
       )}
       {page === 1 && (
         <Quantity 
           setQuantity={setQuantity}
           quantity={quantity}
-          setPage={setPage}
         />
       )}
       {page > 1 && question && (
         <Game
           readyQuestions={readyQuestions}
           question={question}
-          step={step}
-          setStep={setStep}
           correct={correct}
           setCorrect={setCorrect}
         />

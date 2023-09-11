@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { geography } from '../../data/geography';
 import './QuestionList.scss';
 import { Sorting } from '../../components/Sorting/Sorting';
 import classNames from 'classnames';
+import { useGetAllQuestionsQuery } from '../../services/questions.service';
 
 
 export const QuestionList: React.FC = () => {
+  const { data: questions } = useGetAllQuestionsQuery();
   const [currentQuestion, setCurrentQuestion] = useState<string>('');
   const [query, setQuery] = useState('');
   const [showAnswers, setShowAnswers] = useState<string[]>([]);
@@ -37,7 +38,7 @@ export const QuestionList: React.FC = () => {
     });
   }
 
-  const filteredQuestions = geography.questions.filter(question => (
+  const filteredQuestions = questions?.filter(question => (
     question.title.toLowerCase().includes(query.toLowerCase().trim())
   ));
 
@@ -109,7 +110,7 @@ export const QuestionList: React.FC = () => {
           </tr>
         </thead>
         <tbody className='table__body'>
-          {filteredQuestions.map(question => (
+          {filteredQuestions?.map(question => (
             <tr className='table__body_row'>
               <td
                 className='table__body_title'

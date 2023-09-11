@@ -3,18 +3,20 @@ import React, { useState } from 'react';
 
 import cn from 'classnames';
 import { categoryNames } from '../../helpers/PossibleCategories';
+import { useAppDispatch } from '../../app/store';
+import { increment } from '../../features/page.slice';
 
 type Props = {
   setChosenCategories: React.Dispatch<React.SetStateAction<string[]>>,
   chosenCategories: string[],
-  setPage: (page: number) => void,
 }
 
 export const Filter: React.FC<Props> = ({
   setChosenCategories,
   chosenCategories,
-  setPage,
 }) => {
+  const dispatch = useAppDispatch();
+
   const [isWarning, setIsWarning] = useState(false);
 
   const handleChooseCategory = (chosenCategory: string) => {
@@ -35,7 +37,7 @@ export const Filter: React.FC<Props> = ({
     ]))
   };
 
-  const handleContinue = (page: number) => {
+  const handleContinue = () => {
     if (chosenCategories.length === 0) {
       setIsWarning(true);
       setTimeout(() => {
@@ -45,7 +47,7 @@ export const Filter: React.FC<Props> = ({
       return;
     }
 
-    setPage(page);
+    dispatch(increment());
   }
 
   return (
@@ -70,7 +72,7 @@ export const Filter: React.FC<Props> = ({
       </div>
       <button
         className="filterPage__button filterPage__button--next"
-        onClick={() => handleContinue(1)}
+        onClick={handleContinue}
       >
         Далі
       </button>
