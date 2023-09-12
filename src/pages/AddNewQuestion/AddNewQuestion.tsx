@@ -3,7 +3,7 @@ import cn from "classnames";
 import './AddNewQuestion.scss';
 import { categoryNames, possibleCategories } from "../../helpers/PossibleCategories";
 import { getKeyByValue } from "../../helpers/getKeyByValue";
-import { useAddQuestionMutation, useGetAllQuestionsQuery } from "../../services/questions.service";
+import { useAddQuestionMutation, useEditQuestionMutation, useGetAllQuestionsQuery } from "../../services/questions.service";
 import { useAppDispatch, useAppSelector } from "../../app/store";
 import { setTitle } from "../../features/title.slice";
 import { addNewField, clearInput, removeField, setAnswers, setDefaultAnswers } from "../../features/answers.slice";
@@ -25,6 +25,7 @@ export const AddNewQuestion = () => {
   const dispatch = useAppDispatch();
 
   const [addQuestion] = useAddQuestionMutation();
+  const [editQuestion] = useEditQuestionMutation();
 
   const titleLimit = 120;
   const answerLimit = 60;
@@ -130,12 +131,14 @@ export const AddNewQuestion = () => {
         return;
       }
     if (title.length < 10) {
-      // alert('Закоротке питання')
-      console.log('Закоротке питання')
+      console.log('Закоротке питання');
+
+      return;
     }
 
     const newQuestion = {
       title,
+      newTitle: title,
       answers,
       correctAnswer: answers.indexOf(correctAnswer),
       category: getKeyByValue(possibleCategories, chosenCategory),
@@ -143,10 +146,12 @@ export const AddNewQuestion = () => {
       difficulty: chosenDifficulty
     }
 
+    console.log(newQuestion)
+
     // if (questions?.find(question => question.id === ))
     try {
-      const response = await addQuestion(newQuestion);
-  
+      const response = await editQuestion(newQuestion);
+      await refetch();
       console.log('Question added successfully:', response);
     } catch (error) {
       console.error('Error adding question:', error);
