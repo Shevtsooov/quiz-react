@@ -1,7 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 import './Game.scss'
-import { Question } from '../types/question';
+import { Question } from '../../types/question';
 import { useAppDispatch, useAppSelector } from '../../app/store';
 import { increment } from '../../features/step.slice';
 import { setInCorrect } from '../../features/isInCorrect.slice';
@@ -48,10 +48,6 @@ export const Game: React.FC<Props> = ({
   }
   
   const percentage = Math.round(step / readyQuestions.length * 100);
-
-  console.log(typeof question.answers);
-  console.log(question);
-  console.log(question.answers);
 
   return (
     <>

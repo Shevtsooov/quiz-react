@@ -111,7 +111,7 @@ export const QuestionList: React.FC = () => {
         </thead>
         <tbody className='table__body'>
           {filteredQuestions?.map(question => (
-            <tr className='table__body_row'>
+            <tr className='table__body_row' key={question.title}>
               <td
                 className='table__body_title'
                 onMouseEnter={() => handleAdd(question.title)}

@@ -1,17 +1,27 @@
-import { FormEvent, useState } from "react";
+import { FormEvent } from "react";
 import cn from "classnames";
 import './AddNewQuestion.scss';
 import { categoryNames, possibleCategories } from "../../helpers/PossibleCategories";
 import { getKeyByValue } from "../../helpers/getKeyByValue";
+import { useAddQuestionMutation } from "../../services/questions.service";
+import { useAppDispatch, useAppSelector } from "../../app/store";
+import { setTitle } from "../../features/title.slice";
+import { addNewField, clearInput, removeField, setAnswers, setDefaultAnswers } from "../../features/answers.slice";
+import { setCorrectAnswer } from "../../features/correctAnswer.slice";
+import { setChosenCategory } from "../../features/chosenCategory.slice";
+import { setChosenDifficulty } from "../../features/chosenDifficulty.slice";
 
 const difficultyLevels = ['Легко', 'Нормально', 'Складно']
 
 export const AddNewQuestion = () => {
-  const [title, setTitle] = useState<string>('');
-  const [answers, setAnswers] = useState(['', '']);
-  const [correctAnswer, setCorrectAnswer] = useState<string | null>(null);
-  const [chosenCategory, setChosenCategory] = useState<string | null>(null)
-  const [chosenDifficulty, setChosenDifficulty] = useState<string | null>(null)
+  const title = useAppSelector((state) => state.title.value);
+  const answers = useAppSelector((state) => state.answers.value);
+  const correctAnswer = useAppSelector((state) => state.correctAnswer.value);
+  const chosenCategory = useAppSelector((state) => state.chosenCategory.value);
+  const chosenDifficulty = useAppSelector((state) => state.chosenDifficulty.value);
+  const dispatch = useAppDispatch();
+
+  const [addQuestion] = useAddQuestionMutation();
 
   const titleLimit = 120;
   const answerLimit = 60;
@@ -22,11 +32,11 @@ export const AddNewQuestion = () => {
     if (title.length === titleLimit + 1) {
       return;
     }
-    setTitle(title.charAt(0).toUpperCase() + title.slice(1));
+    dispatch(setTitle(title.charAt(0).toUpperCase() + title.slice(1)));
   };
 
   const clearTitle = () => {
-    setTitle('');
+    dispatch(setTitle(''));
   }
   
   // ADD INPUT
@@ -36,42 +46,28 @@ export const AddNewQuestion = () => {
       if (answers.length === 4) {
         return;
       }
-      setAnswers(state => [...state, ''])
+      dispatch(addNewField());
 
       return;
     }
 
-    setAnswers((state) => {
-      const updatedAnswers = [...state];
-      return updatedAnswers.filter((answer, index) => (
-        index !== i
-      ))
-    });
-    setCorrectAnswer(null);
+    dispatch(removeField(i));
+    dispatch(setCorrectAnswer(null));
   }
 
   // ADD ANSWER
 
-  const addAnswer = (e: string, i: number) => {
-    if (e.length === answerLimit) {
+  const addAnswer = (index: number, value: string) => {
+    if (value.length === answerLimit) {
       return;
     }
-    setAnswers((state) => {
-      const updatedAnswers = [...state];
-      updatedAnswers[i] = e.charAt(0).toUpperCase() + e.slice(1);
-      return updatedAnswers;
-    });
+
+    dispatch(setAnswers({ index, value }));
   }
 
   const clearAnswer = (i:number) => {
-    setAnswers((state) => {
-      return state.map((answer, index) => {
-        return index === i
-          ? ''
-          : answer
-      }
-    )});
-    setCorrectAnswer(null);
+    dispatch(clearInput(i));
+    dispatch(setCorrectAnswer(null));
   }
 
   //CHOOSE CORRECT
@@ -84,40 +80,40 @@ export const AddNewQuestion = () => {
     }
 
     if (correctAnswer === index) {
-      setCorrectAnswer(null);
+      dispatch(setCorrectAnswer(null));
 
       return;
     }
-    setCorrectAnswer(index);
+    dispatch(setCorrectAnswer(index));
   }
   
   //CHOOSE CATEGORY
 
   const chooseCategory = (category: string) => {
     if (chosenCategory === category) {
-      setChosenCategory(null);
+      dispatch(setChosenCategory(null));
 
       return;
     }
 
-    setChosenCategory(category);
+    dispatch(setChosenCategory(category));
   }
 
   //CHOOSE DIFFICULTY
 
   const chooseDifficulty = (difficulty: string) => {
     if (chosenDifficulty === difficulty) {
-      setChosenDifficulty(null);
+      dispatch(setChosenDifficulty(null));
 
       return;
     }
 
-    setChosenDifficulty(difficulty);
+    dispatch(setChosenDifficulty(difficulty));
   }
 
   //HANDLE SUBMIT
 
-  const handleSubmit = (
+  const handleSubmit = async (
     event: FormEvent
   ) => {
     event.preventDefault();
@@ -143,14 +139,21 @@ export const AddNewQuestion = () => {
       categoryName: chosenCategory,
       difficulty: chosenDifficulty
     }
-    
+    try {
+      const response = await addQuestion(newQuestion);
+  
+      console.log('Question added successfully:', response);
+    } catch (error) {
+      console.error('Error adding question:', error);
+    }
+
     console.log(newQuestion)
 
-    setTitle('');
-    setAnswers(['', '']);
-    setCorrectAnswer(null);
-    setChosenCategory(null);
-    setChosenDifficulty(null);
+    dispatch(setTitle(''));
+    dispatch(setDefaultAnswers());
+    dispatch(setCorrectAnswer(null));
+    dispatch(setChosenCategory(null));
+    dispatch(setChosenDifficulty(null));
   }
 
   // console.log(title)
@@ -187,7 +190,7 @@ export const AddNewQuestion = () => {
             placeholder={`${i + 1} варіант`}
             maxLength={answerLimit}
             value={answers[i]}
-            onChange={(e) => addAnswer(e.target.value, i)}
+            onChange={(e) => addAnswer(i, e.target.value)}
           />
 
           <button

@@ -1,6 +1,6 @@
 import React from 'react';
 import './Result.scss'
-import { Question } from '../types/question';
+import { Question } from '../../types/question';
 
 type Props = {
   readyQuestions: Question[]

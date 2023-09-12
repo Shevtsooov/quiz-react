@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { Filter } from '../../components/Filter/Filter';
 import { Quantity } from '../../components/Quantity/Quantity';
@@ -20,18 +20,12 @@ export const Homepage: React.FC = () => {
   const [chosenCategories, setChosenCategories] = useState<string[]>([]);
   const [quantity, setQuantity] = useState(0);
 
-  // useEffect(() => {
-  //   questionApi.getAll()
-  //   .then((response) => dispatch(setQuestions(response)));
-  // })
-
   const filteredQuestions = useMemo(() => filterQuestions(questions, chosenCategories), [chosenCategories, questions]);
   const readyQuestions = useMemo(() => getRandomQuestions(filteredQuestions, quantity), [filteredQuestions, quantity]);
 
   const question = readyQuestions[step];
 
   const isGameOver = step === readyQuestions.length && page > 1;
-
 
   return (
     <div className="gameboard">

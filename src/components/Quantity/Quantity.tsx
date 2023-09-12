@@ -19,9 +19,9 @@ export const Quantity: React.FC<Props> = ({
   const [isWarning, setIsWarning] = useState(false);
 
   const handleChooseQuantity = (chosenQuantity: number) => {
-
     if (quantity === chosenQuantity) {
       setQuantity(0);
+      
       return;
     }
 
@@ -64,6 +64,14 @@ export const Quantity: React.FC<Props> = ({
           onClick={() => {handleChooseQuantity(10)}}
         >
           10
+        </button>
+        <button
+          className={cn('quantityPage__button', {
+            'quantityPage__button--chosen': quantity === 15,
+          })}
+          onClick={() => {handleChooseQuantity(15)}}
+        >
+          15
         </button>
       </div>
       <button

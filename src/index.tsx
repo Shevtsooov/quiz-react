@@ -17,7 +17,7 @@ if (rootElement) {
         <React.StrictMode>
             <App />
         </React.StrictMode>
-      </HashRouter>,
+      </HashRouter>
     </Provider>
   );
 }

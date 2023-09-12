@@ -13,7 +13,6 @@ export const possibleCategories = {
   entetainment: 'Розваги',
   technologies: 'Технології',
   floraAndFauna: 'Флора та фауна',
-  human: 'Людина'
 };
 
 export const categoryNames = Object.values(possibleCategories);

@@ -1,12 +1,6 @@
-// import { geography } from '../data/geography';
-// import { history } from '../data/history';
-// import { sport } from '../data/sport';
-// import { others } from '../data/others';
-import { Question } from '../components/types/question';
+import { Question } from '../types/question';
 import { getKeyByValue } from './getKeyByValue';
 import { possibleCategories } from './PossibleCategories';
-
-// export const categories = [history, geography, sport, others];
 
 export const filterQuestions = (
   questionsFromServer: Question[] | undefined,
@@ -23,8 +17,8 @@ export const filterQuestions = (
     
     if (questionsByCategory) {
       questions = [
-        ...questionsByCategory,
-        ...questions
+        ...questions,
+        ...questionsByCategory
       ];
     }
   }
@@ -33,6 +27,13 @@ export const filterQuestions = (
 }
 
 export const getRandomQuestions = (array: Question[], count: number) => {
-  const shuffledArray = array.slice().sort(() => 0.5 - Math.random());
+  const shuffledArray = array.slice(); 
+
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+  }
+
   return shuffledArray.slice(0, count);
 };
+
