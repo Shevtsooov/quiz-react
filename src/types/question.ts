@@ -1,4 +1,5 @@
 export interface Question {
+  id: number
   title: string
   answers: string[]
   correctAnswer: number

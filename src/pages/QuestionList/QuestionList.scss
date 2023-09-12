@@ -226,6 +226,18 @@
       padding: 20px;
       vertical-align: top;
       text-align: center;
+
+      &--easy {
+        color: #16af05;
+      }
+
+      &--medium {
+        color: #a9a906;
+      }
+
+      &--hard {
+        color: #ce0000;
+      }
     }
   }
 }

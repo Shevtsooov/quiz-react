@@ -24,11 +24,19 @@ export const QuestionsApi = createApi({
         body,
       }),
     }),
+    deleteQuestion: builder.mutation<Question, Partial<Question>>({
+      query: (body) => ({
+        url: `questions`,
+        method: 'DELETE',
+        body,
+      }),
+    }),
   })
 })
 
 export const {
   useGetAllQuestionsQuery,
   useAddQuestionMutation,
-  useEditQuestionMutation
+  useEditQuestionMutation,
+  useDeleteQuestionMutation,
 } = QuestionsApi;

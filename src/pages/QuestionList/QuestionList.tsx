@@ -2,11 +2,15 @@ import { useState } from 'react';
 import './QuestionList.scss';
 import { Sorting } from '../../components/Sorting/Sorting';
 import classNames from 'classnames';
-import { useGetAllQuestionsQuery } from '../../services/questions.service';
+import {
+  useDeleteQuestionMutation,
+  useGetAllQuestionsQuery,
+} from '../../services/questions.service';
 
 
 export const QuestionList: React.FC = () => {
-  const { data: questions } = useGetAllQuestionsQuery();
+  const { data: questions, refetch } = useGetAllQuestionsQuery();
+  const [deleteQuestion] = useDeleteQuestionMutation();
   const [currentQuestion, setCurrentQuestion] = useState<string>('');
   const [query, setQuery] = useState('');
   const [showAnswers, setShowAnswers] = useState<string[]>([]);
@@ -60,6 +64,17 @@ export const QuestionList: React.FC = () => {
     }
 
     setFilterDifficulty('Складність');
+  }
+
+  const handleDeleteQuestion = async (title: string) => {
+    try {
+      await deleteQuestion({ title });
+      // After successful deletion, refetch the list of questions to update the UI
+      await refetch();
+    } catch (error) {
+      // Handle any errors that occur during deletion
+      console.error('Error deleting question:', error);
+    }
   }
 
   return (
@@ -149,7 +164,7 @@ export const QuestionList: React.FC = () => {
                   </button>
                   <button
                     className='table__body_buttons--general  table__body_buttons--remove'
-                    // onClick={}
+                    onClick={() => handleDeleteQuestion(question.title)}
                   >
                   </button>
                 </div>
@@ -157,7 +172,15 @@ export const QuestionList: React.FC = () => {
               </td>
               {/* <td className='list__table_body_answers'>A</td> */}
               <td className='table__body_category'>{question.categoryName}</td>
-              <td className='table__body_difficulty'>{question.difficulty}</td>
+              <td
+                className={classNames('table__body_difficulty', {
+                  'table__body_difficulty--easy': question.difficulty === 'Легко',
+                  'table__body_difficulty--medium': question.difficulty === 'Нормально',
+                  'table__body_difficulty--hard': question.difficulty === 'Складно'
+                })}
+              >
+                {question.difficulty}
+              </td>
             </tr>
           ))}
         </tbody>
