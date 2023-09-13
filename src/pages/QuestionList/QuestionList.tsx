@@ -57,6 +57,7 @@ export const QuestionList: React.FC = () => {
 
   const handleClearQuery = () => {
     dispatch(setQuery(''));
+    setShowAnswers([]);
   }
 
   const handleAdd = (title: string) => {
@@ -82,22 +83,23 @@ export const QuestionList: React.FC = () => {
 
     if (filteredDifficulty === 'Складність') {
       dispatch(setFilteredDifficulty('Легко'));
-      console.log(questions?.rows);
+      setCurrentPage(1);
       return;
     }
     if (filteredDifficulty === 'Легко') {
       dispatch(setFilteredDifficulty('Нормально'));
-      console.log(questions?.rows);
+      setCurrentPage(1);
+
       return;
     }
     if (filteredDifficulty === 'Нормально') {
       dispatch(setFilteredDifficulty('Складно'));
-      console.log(questions?.rows);
+      setCurrentPage(1);
+
       return;
     }
 
     dispatch(setFilteredDifficulty('Складність'));
-    
   }
 
   const handleDeleteQuestion = async (title: string) => {
