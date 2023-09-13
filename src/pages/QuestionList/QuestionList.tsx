@@ -17,6 +17,7 @@ import { setChosenDifficulty } from '../../features/chosenDifficulty.slice';
 import { setFilteredDifficulty } from '../../features/filteredDifficulty.slice';
 import { setQuery } from '../../features/query.slice';
 import { Pagination } from '../../components/Pagination/Pagination';
+import { setEditedQuestionId } from '../../features/editedQuestionId.slice';
 
 
 export const QuestionList: React.FC = () => {
@@ -110,6 +111,7 @@ export const QuestionList: React.FC = () => {
 
   const handleEdit = (question: Question) => {
     if (title !== '') {
+      dispatch(setEditedQuestionId(null))
       dispatch(setTitle(''));
       dispatch(setDefaultAnswers());
       dispatch(setCorrectAnswer(null));
@@ -117,6 +119,7 @@ export const QuestionList: React.FC = () => {
       dispatch(setChosenDifficulty(null));
     }
 
+    dispatch(setEditedQuestionId(question.id))
     dispatch(setTitle(question.title));
     dispatch(setAnswers({ index: 0, value: question.answers[0] }));
     dispatch(setAnswers({ index: 1, value: question.answers[1] }));

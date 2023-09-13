@@ -1,6 +1,7 @@
 import React from 'react';
 import './Result.scss'
 import { Question } from '../../types/question';
+import { chooseReactionForResult } from '../../helpers/chooseReactionForResult';
 
 type Props = {
   readyQuestions: Question[]
@@ -11,19 +12,18 @@ export const Result: React.FC<Props> = ({
   readyQuestions,
   correct,
 }) => {
-  const correctForm = correct < 5
-    ? 'питання'
-    : 'питань'
+
+  const { imgSrc, congratText } = chooseReactionForResult(correct, readyQuestions.length)
 
   return (
     <div className="resultPage">
       <img
-      className="resultPage__img"
-      src="https://cdn-icons-png.flaticon.com/512/2278/2278992.png"
-      alt="Congratulations"
+        className="resultPage__img"
+        src={`${imgSrc}`}
+        alt="Congratulations"
       />
       <h2 className="resultPage__header">
-        {`Ви правильно відповіли на ${correct} ${correctForm} з ${readyQuestions.length}`}</h2>
+        {congratText}</h2>
       <a href="/">
         <button className="resultPage__button">Спробувати знову</button>
       </a>

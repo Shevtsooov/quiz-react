@@ -3,10 +3,20 @@ import cn from "classnames";
 import './AddNewQuestion.scss';
 import { categoryNames, possibleCategories } from "../../helpers/PossibleCategories";
 import { getKeyByValue } from "../../helpers/getKeyByValue";
-import { useAddQuestionMutation, useEditQuestionMutation, useGetAllQuestionsQuery } from "../../services/questions.service";
+import {
+  useAddQuestionMutation,
+  useEditQuestionMutation,
+  useGetAllQuestionsQuery,
+} from "../../services/questions.service";
 import { useAppDispatch, useAppSelector } from "../../app/store";
 import { setTitle } from "../../features/title.slice";
-import { addNewField, clearInput, removeField, setAnswers, setDefaultAnswers } from "../../features/answers.slice";
+import {
+  addNewField,
+  clearInput,
+  removeField,
+  setAnswers,
+  setDefaultAnswers,
+} from "../../features/answers.slice";
 import { setCorrectAnswer } from "../../features/correctAnswer.slice";
 import { setChosenCategory } from "../../features/chosenCategory.slice";
 import { setChosenDifficulty } from "../../features/chosenDifficulty.slice";
@@ -14,6 +24,7 @@ import { setChosenDifficulty } from "../../features/chosenDifficulty.slice";
 const difficultyLevels = ['Легко', 'Нормально', 'Складно']
 
 export const AddNewQuestion = () => {
+  const editedQuestionId = useAppSelector((state) => state.editedQuestionId.value);
   const title = useAppSelector((state) => state.title.value);
   const answers = useAppSelector((state) => state.answers.value);
   const correctAnswer = useAppSelector((state) => state.correctAnswer.value);
@@ -139,7 +150,6 @@ export const AddNewQuestion = () => {
 
     const newQuestion = {
       title,
-      newTitle: title,
       answers,
       correctAnswer: answers.indexOf(correctAnswer),
       category: getKeyByValue(possibleCategories, chosenCategory),
@@ -149,22 +159,37 @@ export const AddNewQuestion = () => {
 
     console.log(newQuestion)
 
-    // if (questions?.find(question => question.id === ))
     try {
+      if (editedQuestionId && questions?.rows.find(question => question.id === editedQuestionId)) {
+        console.log('Question found');
+
+
+        const editedQuestion = {
+          id: editedQuestionId,
+          ...newQuestion,
+        }
+
+        const response = await editQuestion(editedQuestion);
+
+        console.log('Question edited successfully:', response);
+
+        return;
+      }
+
       const response = await addQuestion(newQuestion);
-      await refetch();
+
       console.log('Question added successfully:', response);
     } catch (error) {
       console.error('Error adding question:', error);
+    } finally {
+      dispatch(setTitle(''));
+      dispatch(setDefaultAnswers());
+      dispatch(setCorrectAnswer(null));
+      dispatch(setChosenCategory(null));
+      dispatch(setChosenDifficulty(null));
     }
 
     console.log(newQuestion)
-
-    dispatch(setTitle(''));
-    dispatch(setDefaultAnswers());
-    dispatch(setCorrectAnswer(null));
-    dispatch(setChosenCategory(null));
-    dispatch(setChosenDifficulty(null));
   }
 
   const showExample = () => {

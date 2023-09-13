@@ -14,6 +14,7 @@ import { chosenDifficultyReducer } from '../features/chosenDifficulty.slice'
 import { filteredCategoryReducer } from '../features/filteredCategory.slice'
 import { filteredDifficultyReducer } from '../features/filteredDifficulty.slice'
 import { queryReducer } from '../features/query.slice'
+import { editedQuestionIdReducer } from '../features/editedQuestionId.slice'
 
 export const store = configureStore({
   reducer: {
@@ -23,6 +24,7 @@ export const store = configureStore({
     isInCorrect: isInCorrectReducer,
     clickedAnswerIndex: clickedAnswerIndexReducer,
     
+    editedQuestionId: editedQuestionIdReducer,
     title: titleReducer,
     answers: answersReducer,
     correctAnswer: correctAnswerReducer,
