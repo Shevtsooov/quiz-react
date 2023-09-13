@@ -10,7 +10,7 @@ export const possibleCategories = {
   art: 'Мистецтво',
   literature: 'Література',
   personalities: 'Особистості',
-  entetainment: 'Розваги',
+  entertainment: 'Розваги',
   technologies: 'Технології',
   floraAndFauna: 'Флора та фауна',
 };

@@ -151,7 +151,7 @@ export const AddNewQuestion = () => {
 
     // if (questions?.find(question => question.id === ))
     try {
-      const response = await editQuestion(newQuestion);
+      const response = await addQuestion(newQuestion);
       await refetch();
       console.log('Question added successfully:', response);
     } catch (error) {

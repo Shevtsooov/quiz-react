@@ -5,7 +5,11 @@ import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/store';
 import { setFilteredCategory } from '../../features/filteredCategory.slice';
 
-export const Sorting: React.FC = () => {
+type Props = {
+  setCurrentPage: (page: number) => void
+}
+
+export const Sorting: React.FC<Props> = ({ setCurrentPage }) => {
   const [droped, setDroped] = useState(false);
   const filteredCategory = useAppSelector(state => state.filteredCategory.value);
   const dispatch = useAppDispatch();
@@ -41,6 +45,7 @@ export const Sorting: React.FC = () => {
   const handleOptionClick = (option: string) => {
     dispatch(setFilteredCategory(option));
     setDroped(false);
+    setCurrentPage(1);
   };
 
   return (

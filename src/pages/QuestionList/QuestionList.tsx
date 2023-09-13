@@ -23,7 +23,7 @@ export const QuestionList: React.FC = () => {
   const [currentQuestion, setCurrentQuestion] = useState<string>('');
   const [showAnswers, setShowAnswers] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [perPage, setPerPage] = useState(20);
+  const [perPage] = useState(20);
   const navigate = useNavigate();
   
   const title = useAppSelector(state => state.title.value);
@@ -33,7 +33,9 @@ export const QuestionList: React.FC = () => {
   const dispatch = useAppDispatch();
   
   const [deleteQuestion] = useDeleteQuestionMutation();
+
   const { data: questions, refetch } = useFindAndCountQuestionsQuery({
+    limit: perPage,
     offset: (currentPage - 1) * perPage,
     query,
     categoryName: filteredCategory === 'Всі категорії'
@@ -44,9 +46,9 @@ export const QuestionList: React.FC = () => {
                   : filteredDifficulty
   });
 
-  // useEffect(() => {
-  //   refetch();
-  // }, [query, filteredCategory, filteredDifficulty, refetch]);
+  useEffect(() => {
+      refetch();
+  }, [questions, refetch]);
 
   const handleSearch = (search: string) => {
     dispatch(setQuery(search));
@@ -140,8 +142,6 @@ export const QuestionList: React.FC = () => {
     setCurrentPage(pageNumber);
   };
 
-  console.log(`http://localhost:5001/questions?query=${query}&categoryName=${filteredCategory}&difficulty=${filteredDifficulty}`)
-
   return (
     <div className='list'>
       <h1 className='list__title'>Список питань</h1>
@@ -174,7 +174,9 @@ export const QuestionList: React.FC = () => {
         </div>
 
         
-        <Sorting />
+        <Sorting 
+          setCurrentPage={setCurrentPage}
+        />
           
         <button
           className={classNames('list__filter_difficulty', {

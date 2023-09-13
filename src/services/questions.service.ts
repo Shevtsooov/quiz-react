@@ -14,10 +14,11 @@ export const QuestionsApi = createApi({
       query?: string;
       categoryName?: string;
       difficulty?: string,
-      offset?: number
+      offset?: number,
+      limit?: number,
     }>({
-      query: ({ offset, query, categoryName, difficulty }) => ({
-        url: `questions?offset=${offset}&query=${query}&categoryName=${categoryName}&difficulty=${difficulty}`,
+      query: ({ limit, offset, query, categoryName, difficulty }) => ({
+        url: `questions?limit=${limit}&offset=${offset}&query=${query}&categoryName=${categoryName}&difficulty=${difficulty}`,
       }),
     }),
     addQuestion: builder.mutation<Questions, Partial<Question>>({
