@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './QuestionList.scss';
 import { Sorting } from '../../components/Sorting/Sorting';
 import classNames from 'classnames';
 import {
   useDeleteQuestionMutation,
-  useGetAllQuestionsQuery,
+  useFindAndCountQuestionsQuery,
 } from '../../services/questions.service';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/store';
@@ -14,26 +14,46 @@ import { addNewField, setAnswers, setDefaultAnswers } from '../../features/answe
 import { setCorrectAnswer } from '../../features/correctAnswer.slice';
 import { setChosenCategory } from '../../features/chosenCategory.slice';
 import { setChosenDifficulty } from '../../features/chosenDifficulty.slice';
+import { setFilteredDifficulty } from '../../features/filteredDifficulty.slice';
+import { setQuery } from '../../features/query.slice';
+import { Pagination } from '../../components/Pagination/Pagination';
 
 
 export const QuestionList: React.FC = () => {
-  const { data: questions, refetch } = useGetAllQuestionsQuery();
-  const [deleteQuestion] = useDeleteQuestionMutation();
   const [currentQuestion, setCurrentQuestion] = useState<string>('');
-  const [query, setQuery] = useState('');
   const [showAnswers, setShowAnswers] = useState<string[]>([]);
-  const [filterDifficulty, setFilterDifficulty] = useState('Складність')
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState(20);
   const navigate = useNavigate();
-
+  
   const title = useAppSelector(state => state.title.value);
+  const query = useAppSelector(state => state.query.value);
+  const filteredDifficulty = useAppSelector(state => state.filteredDifficulty.value);
+  const filteredCategory = useAppSelector(state => state.filteredCategory.value);
   const dispatch = useAppDispatch();
+  
+  const [deleteQuestion] = useDeleteQuestionMutation();
+  const { data: questions, refetch } = useFindAndCountQuestionsQuery({
+    offset: (currentPage - 1) * perPage,
+    query,
+    categoryName: filteredCategory === 'Всі категорії'
+                  ? 'all'
+                  : filteredCategory,
+    difficulty:  filteredDifficulty === 'Складність'
+                  ? 'all'
+                  : filteredDifficulty
+  });
+
+  // useEffect(() => {
+  //   refetch();
+  // }, [query, filteredCategory, filteredDifficulty, refetch]);
 
   const handleSearch = (search: string) => {
-    setQuery(search);
+    dispatch(setQuery(search));
   }
 
   const handleClearQuery = () => {
-    setQuery('');
+    dispatch(setQuery(''));
   }
 
   const handleAdd = (title: string) => {
@@ -54,28 +74,27 @@ export const QuestionList: React.FC = () => {
     });
   }
 
-  const filteredQuestions = questions?.filter(question => (
-    question.title.toLowerCase().includes(query.toLowerCase().trim())
-  ));
-
   const handleDifficulty = () => {
-    if (filterDifficulty === 'Складність') {
-      setFilterDifficulty('Легко');
+    refetch();
 
+    if (filteredDifficulty === 'Складність') {
+      dispatch(setFilteredDifficulty('Легко'));
+      console.log(questions?.rows);
       return;
     }
-    if (filterDifficulty === 'Легко') {
-      setFilterDifficulty('Нормально');
-
+    if (filteredDifficulty === 'Легко') {
+      dispatch(setFilteredDifficulty('Нормально'));
+      console.log(questions?.rows);
       return;
     }
-    if (filterDifficulty === 'Нормально') {
-      setFilterDifficulty('Складно');
-
+    if (filteredDifficulty === 'Нормально') {
+      dispatch(setFilteredDifficulty('Складно'));
+      console.log(questions?.rows);
       return;
     }
 
-    setFilterDifficulty('Складність');
+    dispatch(setFilteredDifficulty('Складність'));
+    
   }
 
   const handleDeleteQuestion = async (title: string) => {
@@ -88,7 +107,6 @@ export const QuestionList: React.FC = () => {
   }
 
   const handleEdit = (question: Question) => {
-
     if (title !== '') {
       dispatch(setTitle(''));
       dispatch(setDefaultAnswers());
@@ -118,16 +136,23 @@ export const QuestionList: React.FC = () => {
     navigate('/new-question');
   }
 
+  const onPageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  console.log(`http://localhost:5001/questions?query=${query}&categoryName=${filteredCategory}&difficulty=${filteredDifficulty}`)
+
   return (
     <div className='list'>
       <h1 className='list__title'>Список питань</h1>
       <p
         className='list__amount'
       >
-        {`Кількість питань: 
-        ${filteredQuestions
-          ? filteredQuestions.length
-          : 'обрахування...'}`}
+        {`Кількість питань: ${
+          questions?.rows
+            ? questions?.count
+            : 'обрахування...'
+          }`}
       </p>
       <div className='list__filter'>
         <div className='list__filter_input'>
@@ -153,13 +178,13 @@ export const QuestionList: React.FC = () => {
           
         <button
           className={classNames('list__filter_difficulty', {
-            'list__filter_difficulty--easy' : filterDifficulty === 'Легко',
-            'list__filter_difficulty--medium' : filterDifficulty === 'Нормально',
-            'list__filter_difficulty--hard' : filterDifficulty === 'Складно',
+            'list__filter_difficulty--easy' : filteredDifficulty === 'Легко',
+            'list__filter_difficulty--medium' : filteredDifficulty === 'Нормально',
+            'list__filter_difficulty--hard' : filteredDifficulty === 'Складно',
           })}
           onClick={handleDifficulty}
         >
-          {filterDifficulty}
+          {filteredDifficulty}
         </button>
 
       </div>
@@ -173,7 +198,7 @@ export const QuestionList: React.FC = () => {
           </tr>
         </thead>
         <tbody className='table__body'>
-          {filteredQuestions?.map(question => (
+          {questions?.rows.map(question => (
             <tr className='table__body_row' key={question.title}>
               <td
                 className='table__body_title'
@@ -221,7 +246,6 @@ export const QuestionList: React.FC = () => {
                 </div>
                 )}
               </td>
-              {/* <td className='list__table_body_answers'>A</td> */}
               <td className='table__body_category'>{question.categoryName}</td>
               <td
                 className={classNames('table__body_difficulty', {
@@ -236,12 +260,15 @@ export const QuestionList: React.FC = () => {
           ))}
         </tbody>
       </table>
-
-
+      {questions?.rows &&  questions.count > 20 && (
+        <Pagination
+          total={questions?.count}
+          currentPage={currentPage}
+          onPageChange={onPageChange}
+        />
+      )}
+      
     </div>
   );
-}
-function dispatch(arg0: any) {
-  throw new Error('Function not implemented.');
 }
 

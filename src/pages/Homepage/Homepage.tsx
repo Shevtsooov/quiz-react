@@ -20,7 +20,7 @@ export const Homepage: React.FC = () => {
   const [chosenCategories, setChosenCategories] = useState<string[]>([]);
   const [quantity, setQuantity] = useState(0);
 
-  const filteredQuestions = useMemo(() => filterQuestions(questions, chosenCategories), [chosenCategories, questions]);
+  const filteredQuestions = useMemo(() => filterQuestions(questions?.rows, chosenCategories), [chosenCategories, questions]);
   const readyQuestions = useMemo(() => getRandomQuestions(filteredQuestions, quantity), [filteredQuestions, quantity]);
 
   const question = readyQuestions[step];

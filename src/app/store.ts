@@ -11,6 +11,9 @@ import { answersReducer } from '../features/answers.slice'
 import { correctAnswerReducer } from '../features/correctAnswer.slice'
 import { chosenCategoryReducer } from '../features/chosenCategory.slice'
 import { chosenDifficultyReducer } from '../features/chosenDifficulty.slice'
+import { filteredCategoryReducer } from '../features/filteredCategory.slice'
+import { filteredDifficultyReducer } from '../features/filteredDifficulty.slice'
+import { queryReducer } from '../features/query.slice'
 
 export const store = configureStore({
   reducer: {
@@ -19,12 +22,18 @@ export const store = configureStore({
     isCorrect: isCorrectReducer,
     isInCorrect: isInCorrectReducer,
     clickedAnswerIndex: clickedAnswerIndexReducer,
-    [QuestionsApi.reducerPath]: QuestionsApi.reducer,
+    
     title: titleReducer,
     answers: answersReducer,
     correctAnswer: correctAnswerReducer,
     chosenCategory: chosenCategoryReducer,
     chosenDifficulty: chosenDifficultyReducer,
+
+    query: queryReducer,
+    filteredCategory: filteredCategoryReducer,
+    filteredDifficulty: filteredDifficultyReducer,
+
+    [QuestionsApi.reducerPath]: QuestionsApi.reducer,
   },
   middleware: (getDefaultMiddleware) => (
     getDefaultMiddleware().concat(QuestionsApi.middleware)

@@ -7,3 +7,8 @@ export interface Question {
   categoryName: string
   difficulty: string | null
 }
+
+export interface Questions {
+  count: number
+  rows: Question[]
+}

@@ -21,6 +21,7 @@ export const AddNewQuestion = () => {
   const chosenDifficulty = useAppSelector((state) => state.chosenDifficulty.value);
   const [isExampleVisible, setIsExampleVisible] = useState(false);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: questions, refetch } = useGetAllQuestionsQuery();
   const dispatch = useAppDispatch();
 

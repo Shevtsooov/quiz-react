@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Question } from '../types/question';
+import { Question, Questions } from '../types/question';
 
 export const QuestionsApi = createApi({
   reducerPath: 'QuestionsApi',
@@ -7,24 +7,34 @@ export const QuestionsApi = createApi({
     baseUrl: 'https://quiz-server-3co9.onrender.com'
   }),
   endpoints: (builder) => ({
-    getAllQuestions: builder.query<Question[], void>({
+    getAllQuestions: builder.query<Questions, void>({
       query: () => 'questions'
     }),
-    addQuestion: builder.mutation<Question, Partial<Question>>({
+    findAndCountQuestions: builder.query<Questions, {
+      query?: string;
+      categoryName?: string;
+      difficulty?: string,
+      offset?: number
+    }>({
+      query: ({ offset, query, categoryName, difficulty }) => ({
+        url: `questions?offset=${offset}&query=${query}&categoryName=${categoryName}&difficulty=${difficulty}`,
+      }),
+    }),
+    addQuestion: builder.mutation<Questions, Partial<Question>>({
       query: (body) => ({
         url: `questions`,
         method: 'POST',
         body,
       }),
     }),
-    editQuestion: builder.mutation<Question, Partial<Question>>({
+    editQuestion: builder.mutation<Questions, Partial<Question>>({
       query: (body) => ({
         url: `questions`,
         method: 'PATCH',
         body,
       }),
     }),
-    deleteQuestion: builder.mutation<Question, Partial<Question>>({
+    deleteQuestion: builder.mutation<Questions, Partial<Question>>({
       query: (body) => ({
         url: `questions`,
         method: 'DELETE',
@@ -36,6 +46,7 @@ export const QuestionsApi = createApi({
 
 export const {
   useGetAllQuestionsQuery,
+  useFindAndCountQuestionsQuery,
   useAddQuestionMutation,
   useEditQuestionMutation,
   useDeleteQuestionMutation,
