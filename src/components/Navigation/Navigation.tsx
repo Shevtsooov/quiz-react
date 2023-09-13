@@ -8,6 +8,9 @@ import { setTitle } from '../../features/title.slice';
 import { setChosenCategory } from '../../features/chosenCategory.slice';
 import { setChosenDifficulty } from '../../features/chosenDifficulty.slice';
 import { setCorrectAnswer } from '../../features/correctAnswer.slice';
+import { setQuery } from '../../features/query.slice';
+import { setFilteredCategory } from '../../features/filteredCategory.slice';
+import { setFilteredDifficulty } from '../../features/filteredDifficulty.slice';
 
 export const Navigation = () => {
   const dispatch = useAppDispatch();
@@ -20,6 +23,12 @@ export const Navigation = () => {
       dispatch(setChosenDifficulty(null));
   }
 
+  const refreshList = () => {
+      dispatch(setQuery(''));
+      dispatch(setFilteredCategory('Всі категорії'));
+      dispatch(setFilteredDifficulty('Складність'));
+  }
+
   return (
     <nav className="nav">
     <ul className="nav__list">
@@ -29,6 +38,7 @@ export const Navigation = () => {
             'nav__link', 'nav__link-list', { 'is-active': isActive },
           )}
           to="questions"
+          onClick={refreshList}
         >
         </NavLink>
       </li>
