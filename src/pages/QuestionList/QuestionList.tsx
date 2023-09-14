@@ -18,22 +18,30 @@ import { setFilteredDifficulty } from '../../features/filteredDifficulty.slice';
 import { setQuery } from '../../features/query.slice';
 import { Pagination } from '../../components/Pagination/Pagination';
 import { setEditedQuestionId } from '../../features/editedQuestionId.slice';
+import { setPassword } from '../../features/password.slice';
 
 
 export const QuestionList: React.FC = () => {
   const [currentQuestion, setCurrentQuestion] = useState<string>('');
   const [showAnswers, setShowAnswers] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [perPage] = useState(20);
+  const [showModal, setShowModal] = useState(false)
+  const [questionToDelete, setQuestionToDelete] = useState('')
   const navigate = useNavigate();
   
   const title = useAppSelector(state => state.title.value);
   const query = useAppSelector(state => state.query.value);
   const filteredDifficulty = useAppSelector(state => state.filteredDifficulty.value);
   const filteredCategory = useAppSelector(state => state.filteredCategory.value);
+
+  const password = useAppSelector(state => state.password.value);
+
   const dispatch = useAppDispatch();
   
   const [deleteQuestion] = useDeleteQuestionMutation();
+
+  const perPage = 20;
+  const pass = 'Quiz2023';
 
   const { data: questions, refetch } = useFindAndCountQuestionsQuery({
     limit: perPage,
@@ -102,13 +110,20 @@ export const QuestionList: React.FC = () => {
     dispatch(setFilteredDifficulty('Складність'));
   }
 
-  const handleDeleteQuestion = async (title: string) => {
+  const handleShowModal = (title: string) => {
+    setShowModal(true);
+    setQuestionToDelete(title);
+  }
+  
+  const handleDeleteQuestion = async () => {
     try {
-      await deleteQuestion({ title });
+      await deleteQuestion({ title: questionToDelete });
       await refetch();
     } catch (error) {
       console.error('Error deleting question:', error);
     }
+
+    setShowModal(false);
   }
 
   const handleEdit = (question: Question) => {
@@ -149,6 +164,34 @@ export const QuestionList: React.FC = () => {
 
   return (
     <div className='list'>
+      {showModal && (
+        <div className='modal_window'>
+          <button
+            className='modal_window__close'
+            onClick={() => setShowModal(false)}
+          />
+          <p className='modal_window__notice'>
+            Ви дійсно бажаєте видалити це питання?
+          </p>
+          <input 
+            type="password"
+            placeholder='Введіть пароль адміністратора'
+            className='modal_window__password'
+            value={password}
+            onChange={(e) => dispatch(setPassword(e.target.value))}
+          />
+          <button
+            className={classNames('modal_window__remove', {
+              'modal_window__remove--disabled': pass !== password
+            })}
+            disabled={pass !== password}
+            onClick={handleDeleteQuestion}
+          >
+            видалити
+          </button>
+        </div>
+      )} 
+
       <h1 className='list__title'>Список питань</h1>
       <p
         className='list__amount'
@@ -247,7 +290,7 @@ export const QuestionList: React.FC = () => {
                   </button>
                   <button
                     className='table__body_buttons--general  table__body_buttons--remove'
-                    onClick={() => handleDeleteQuestion(question.title)}
+                    onClick={() => handleShowModal(question.title)}
                   >
                   </button>
                 </div>

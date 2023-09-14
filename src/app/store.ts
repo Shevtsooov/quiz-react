@@ -15,6 +15,7 @@ import { filteredCategoryReducer } from '../features/filteredCategory.slice'
 import { filteredDifficultyReducer } from '../features/filteredDifficulty.slice'
 import { queryReducer } from '../features/query.slice'
 import { editedQuestionIdReducer } from '../features/editedQuestionId.slice'
+import { passwordReducer } from '../features/password.slice'
 
 export const store = configureStore({
   reducer: {
@@ -35,6 +36,8 @@ export const store = configureStore({
     filteredCategory: filteredCategoryReducer,
     filteredDifficulty: filteredDifficultyReducer,
 
+    password: passwordReducer,
+    
     [QuestionsApi.reducerPath]: QuestionsApi.reducer,
   },
   middleware: (getDefaultMiddleware) => (
