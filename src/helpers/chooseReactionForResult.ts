@@ -1,15 +1,15 @@
 export const chooseReactionForResult = (
-  correct: number,
-  length: number,
-  ) => {  
-  // let imgSrc;
-  // let congratText;
+correct: number,
+length: number,
+) => {  
 
   const correctPercentage = +((correct / length) * 100).toFixed();
 
   const correctForm = correct < 5
   ? 'питання'
   : 'питань';
+
+  console.log(correctPercentage);
 
   const random = Math.floor(Math.random() * 10) + 1;
 
@@ -20,28 +20,28 @@ export const chooseReactionForResult = (
     }
 
   }
-  if (correctPercentage > 80) {
+  if (correctPercentage >= 80) {
     return {
       imgSrc: `./gif/80/${random}.gif`,
       congratText: `Ви правильно відповіли на ${correct} ${correctForm} з ${length}`
     }
 
   }
-  if (correctPercentage > 60) {
+  if (correctPercentage >= 60) {
     return {
       imgSrc: `./gif/60/${random}.gif`,
       congratText: `Ви правильно відповіли на ${correct} ${correctForm} з ${length}`
     }
 
   }
-  if (correctPercentage > 40) {
+  if (correctPercentage >= 40) {
     return {
       imgSrc: `./gif/40/${random}.gif`,
       congratText: `Ви правильно відповіли на ${correct} ${correctForm} з ${length}`
     }
 
   }
-  if (correctPercentage > 20) {
+  if (correctPercentage >= 20) {
     return {
       imgSrc: `./gif/20/${random}.gif`,
       congratText: `Ви правильно відповіли на ${correct} ${correctForm} з ${length}`

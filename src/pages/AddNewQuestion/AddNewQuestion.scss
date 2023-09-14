@@ -45,8 +45,15 @@
   }
 
   &__label {
+    width: 45%;
+    padding: 5px 5px 5px 10px;
     font-size: 12px;
+    border-radius: 30px;
     color: #838785;
+
+    &--error {
+      background-color: #fdeded;
+    }
   }
 
   &__title {
@@ -70,6 +77,10 @@
       &:first-letter {
         text-transform: uppercase;
         font-size: 23px;
+      }
+
+      &--error {
+        background-color: #fdeded;
       }
     }
 
@@ -104,6 +115,19 @@
 
       &--hidden {
         display: none;
+      }
+    }
+
+    &_error {
+      display: none;
+
+      &--visible {
+        display: block;
+        position: absolute;
+        left: 20px;
+        bottom: 20px;
+
+        color: #f1a7a7;
       }
     }
   }
@@ -175,6 +199,10 @@
 
     &::first-letter {
       text-transform: capitalize;
+    }
+
+    &--error {
+      background-color: #fdeded;
     }
   
     &_button {
@@ -273,10 +301,67 @@
     border: 1px solid rgb(228, 225, 225);
     border-radius: 30px;
     
-    background-color: #17db45;
+    background-color: #00a627;
+
+    transition: background-color 0.3s;
 
     &--disabled {
-      background-color: #99e7ac;
+      background-color: #00a6279a;
+    }
+  }
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+
+  width: 600px;
+  height: 100%;
+  padding: 20px 40px 40px;
+  z-index: 22;
+
+  border-radius: 30px;
+  background-color: #ffffff;
+  transform: translate(-50%, -50%);
+
+  &_icon {
+    margin-bottom: 40px;
+    height: 200px;
+    background-repeat: no-repeat;
+    background-size: 200px;
+    background-position: center;
+    
+    &--success {
+      background-image: url('../../assets/images/correct.svg');
+    }
+    &--error {
+      background-image: url('../../assets/images/incorrect.svg');
+    }
+  }
+
+  &_text {
+    font-size: 36px;
+
+    &--add_success {
+      color: #00a627;
+    }
+
+    &--update_success {
+      color: #00a627;
+    }
+
+    &--add_error {
+      color: #f68484;
+    }
+
+    &--add_error {
+      color: #f68484;
     }
   }
 }

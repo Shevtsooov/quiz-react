@@ -21,27 +21,55 @@ import { setCorrectAnswer } from "../../features/correctAnswer.slice";
 import { setChosenCategory } from "../../features/chosenCategory.slice";
 import { setChosenDifficulty } from "../../features/chosenDifficulty.slice";
 
-const difficultyLevels = ['Легко', 'Нормально', 'Складно']
-
 export const AddNewQuestion = () => {
+
+  // REDUX TOOLKIT STATE
+
   const editedQuestionId = useAppSelector((state) => state.editedQuestionId.value);
   const title = useAppSelector((state) => state.title.value);
   const answers = useAppSelector((state) => state.answers.value);
   const correctAnswer = useAppSelector((state) => state.correctAnswer.value);
   const chosenCategory = useAppSelector((state) => state.chosenCategory.value);
   const chosenDifficulty = useAppSelector((state) => state.chosenDifficulty.value);
+
+  const dispatch = useAppDispatch();
+
+  // LOCAL STATE
+
   const [isExampleVisible, setIsExampleVisible] = useState(false);
+  const [isTitleError, setIsTitleError] = useState(false);
+  const [isAnswerError, setIsAnswerError] = useState(false);
+  const [isCategoryError, setIsCategoryError] = useState(false);
+  const [isDifficultyError, setIsDifficultyError] = useState(false);
+  
+  const [showModal, setShowModal] = useState(false);
+
+  // RTK QUERY
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: questions, refetch } = useGetAllQuestionsQuery();
-  const dispatch = useAppDispatch();
 
-  const [addQuestion] = useAddQuestionMutation();
-  const [editQuestion] = useEditQuestionMutation();
+  const [addQuestion, {
+    // isLoading: isAdding,
+    isSuccess: isAdded,
+    isError: isErrorAdding,
+  }] = useAddQuestionMutation();
 
+  const [editQuestion, {
+    // isLoading: isUpdating,
+    isSuccess: isUpdated,
+    isError: isErrorUpdating,
+  }] = useEditQuestionMutation();
+
+  // SOME LIMITS AND DIFFICULTIES
+
+  const difficultyLevels = ['Легко', 'Нормально', 'Складно']
   const titleLimit = 120;
   const answerLimit = 60;
+  const timeout = 2000;
   
+  // HANDLERS:
+
   // ADD TITLE
 
   const addTitle = (title: string) => {
@@ -90,7 +118,11 @@ export const AddNewQuestion = () => {
 
   const addCorrect = (index: string) => {
     if (answers.includes('')) {
-      alert('answers cannot be empty');
+      setIsAnswerError(true);
+  
+      setTimeout(() => {
+        setIsAnswerError(false);
+      }, timeout);
 
       return;
     }
@@ -127,26 +159,59 @@ export const AddNewQuestion = () => {
     dispatch(setChosenDifficulty(difficulty));
   }
 
-  //HANDLE SUBMIT
+  //FORM SUBMISSION
+
+  const anyError = title.length < 10
+  || answers.includes('')
+  || correctAnswer === null
+  || !chosenCategory
+  || !chosenDifficulty;
+
+  const shouldWeEdit = editedQuestionId
+  && questions?.rows.find(question => question.id === editedQuestionId);
 
   const handleSubmit = async (
     event: FormEvent
   ) => {
     event.preventDefault();
     
-    if (!title.trim() 
-      || !correctAnswer
-      || !chosenCategory
-      || !chosenDifficulty) {
-        console.log(' питання')
-
-        return;
+    if (anyError) {
+      if (title.length < 10) {
+        setIsTitleError(true);
+  
+        setTimeout(() => {
+          setIsTitleError(false);
+        }, timeout);
       }
-    if (title.length < 10) {
-      console.log('Закоротке питання');
+  
+      if (answers.includes('') || correctAnswer === null) {
+        setIsAnswerError(true);
+  
+        setTimeout(() => {
+          setIsAnswerError(false);
+        }, timeout);
+      };
+  
+      if (!chosenCategory) {
+        setIsCategoryError(true);
+  
+        setTimeout(() => {
+          setIsCategoryError(false);
+        }, timeout);
+      };
+  
+      if (!chosenDifficulty) {
+        setIsDifficultyError(true);
+  
+        setTimeout(() => {
+          setIsDifficultyError(false);
+        }, timeout);
+      };
 
       return;
     }
+
+    setShowModal(true);
 
     const newQuestion = {
       title,
@@ -157,10 +222,9 @@ export const AddNewQuestion = () => {
       difficulty: chosenDifficulty
     }
 
-    console.log(newQuestion)
-
     try {
-      if (editedQuestionId && questions?.rows.find(question => question.id === editedQuestionId)) {
+      if (shouldWeEdit) {
+
         console.log('Question found');
 
 
@@ -171,25 +235,32 @@ export const AddNewQuestion = () => {
 
         const response = await editQuestion(editedQuestion);
 
-        console.log('Question edited successfully:', response);
-
-        return;
+        if (response) {
+          console.log('Question edited successfully:', response);
+        }
+      } else {
+        const response = await addQuestion(newQuestion);
+        
+        if (response) {
+          console.log('Question added successfully:', response);
+        } 
       }
-
-      const response = await addQuestion(newQuestion);
-
-      console.log('Question added successfully:', response);
     } catch (error) {
       console.error('Error adding question:', error);
+      console.log(isErrorAdding, isErrorUpdating);
+      
+      return;
     } finally {
       dispatch(setTitle(''));
       dispatch(setDefaultAnswers());
       dispatch(setCorrectAnswer(null));
       dispatch(setChosenCategory(null));
       dispatch(setChosenDifficulty(null));
-    }
 
-    console.log(newQuestion)
+      setTimeout(() => {
+        setShowModal(false);
+      }, timeout)
+    }
   }
 
   const showExample = () => {
@@ -217,6 +288,42 @@ export const AddNewQuestion = () => {
   
   return (
     <div className="form">
+      {showModal && (
+        <div className="modal">
+          <div className={cn('modal_icon', {
+            'modal_icon--success': isAdded || isUpdated,
+            'modal_icon--error': isErrorAdding || isErrorUpdating
+          })}
+          >
+          </div>
+            {isAdded && (
+            <p 
+              className="modal_text modal_text--add_success"
+            >
+              Питання успішно додано
+            </p>)}
+
+            {isUpdated && (
+            <p 
+              className="modal_text modal_text--update_success"
+            >
+              Питання успішно оновлено
+            </p>)}
+
+            {isErrorAdding && (<p 
+              className="modal_text modal_text--add_error"
+            >
+              На жаль, питання не було додано
+            </p>)}
+            
+            {isErrorUpdating && (<p 
+              className="modal_text modal_text--update_error"
+            >
+              На жаль, питання не було оновлено
+            </p>)}
+        </div>
+      )} 
+
       <div
         className="form__example" 
         onClick={showExample}
@@ -231,34 +338,63 @@ export const AddNewQuestion = () => {
           }
         </p>
       </div>
+
       <form onSubmit={handleSubmit}>
         <div className='form__title'>
           <textarea
-            className='form__title_textarea'
+            className={cn('form__title_textarea', {
+              'form__title_textarea--error': isTitleError
+            })}
             spellCheck='false'
             maxLength={titleLimit}
+            disabled={isExampleVisible}
             placeholder="Напишіть своє питання"
             value={title}
             onChange={(e) => addTitle(e.target.value)}
           />
-          <span className='form__title_limit'>{`${title.length}/${titleLimit}`}</span>
+
+          <span
+            className={cn('form__title_error', {
+              'form__title_error--visible': isTitleError
+            })}
+          >
+            {`Закоротке питання. Введіть мінімум 10 символів.`}
+          </span>
+
+          <span
+            className='form__title_limit'
+          >
+            {`${title.length}/${titleLimit}`}
+          </span>
+
           <button
             type="button"
             className={cn('form__title_clear', {
               'form__title_clear--hidden': title === ''
             })}
+            disabled={isExampleVisible}
             onClick={clearTitle}
           >X</button>
+
         </div>
 
-        <p className='form__label'>Вкажіть можливі та вірну відповіді:</p>
-        {answers.map((el, i) => (
+        <p
+          className={cn('form__label', {
+            'form__label--error': isAnswerError
+          })}
+        >
+          Вкажіть можливі та вірну відповіді:
+        </p>
+        {answers.map((_, i) => (
           <div key={i} className='form__answers'>
             <input
               type="text"
-              className='form__answer'
+              className={cn('form__answer', {
+                'form__answer--error': answers[i] === '' && isAnswerError
+              })}
               style={{width: `${answers[i].length * 2 + 0}ch`}}
               placeholder={`${i + 1} варіант`}
+              disabled={isExampleVisible}
               maxLength={answerLimit}
               value={answers[i]}
               onChange={(e) => addAnswer(i, e.target.value)}
@@ -271,46 +407,51 @@ export const AddNewQuestion = () => {
                 ? 'form__answers--wrong'
                 : 'form__answers--correct'
               }
+              disabled={isExampleVisible}
               onClick={() => addCorrect(answers[i])}
             />
 
             <button
               type="button"
+              disabled={isExampleVisible}
               onClick={() => clearAnswer(i)}
               className={cn('form__answer_button form__answer_button-clear', {
                 'form__answer_button-clear--hidden': answers[i] === ''
               })}
-            >
-              X
-            </button>
+            >X</button>
 
             <button
               type="button"
+              disabled={isExampleVisible}
               onClick={() => addNewInput('-', i)}
               className={cn('form__answer_button form__answer_button-minus', {
                 'form__answer_button-minus--hidden': answers.length === 2
               })}
-            >
-              -
-            </button>
+            >-</button>
 
             <button 
               type="button"
+              disabled={isExampleVisible}
               onClick={() => addNewInput('+', i)}
               className={cn('form__answer_button form__answer_button-plus', {
                 'form__answer_button-plus--hidden': answers.length === 4 || i + 1 !== answers.length
               })}
-            >
-              +
-            </button>
+            >+</button>
           </div>
         ))}
         
-        <p className='form__label'>Оберіть відповідну категорію:</p>
+        <p 
+          className={cn('form__label', {
+          'form__label--error': isCategoryError
+          })}
+        >
+          Оберіть відповідну категорію:
+        </p>
         <div className="form_categories">
           {categoryNames.map(category => (
             <button
               type="button"
+              disabled={isExampleVisible}
               className={cn('form_categories__item', {
                 'form_categories__item--active': chosenCategory === category
               })}
@@ -322,11 +463,18 @@ export const AddNewQuestion = () => {
           ))}
         </div>
 
-        <p className='form__label'>Визначте складність питання:</p>
+        <p 
+          className={cn('form__label', {
+          'form__label--error': isDifficultyError
+          })}
+        >
+          Визначте складність питання:
+        </p>
         <div className="form_categories">
           {difficultyLevels.map(difficulty => (
             <button
               type="button"
+              disabled={isExampleVisible}
               className={cn('form_categories__item', {
                 'form_categories__item--active': chosenDifficulty === difficulty
               })}
@@ -341,11 +489,13 @@ export const AddNewQuestion = () => {
         <button
           type="submit"
           className={cn('form__submit_button', {
-            'form__submit_button--disabled': isExampleVisible
+            'form__submit_button--disabled': isExampleVisible || isDifficultyError
           })}
-          disabled={isExampleVisible}
+          disabled={isExampleVisible || isDifficultyError}
         >
-          Додати питання
+          {shouldWeEdit
+            ? 'Редагувати питання'
+            : 'Додати питання'}
         </button>
       </form>
     </div>
