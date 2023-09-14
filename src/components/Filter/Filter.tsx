@@ -5,6 +5,7 @@ import cn from 'classnames';
 import { categoryNames } from '../../helpers/PossibleCategories';
 import { useAppDispatch } from '../../app/store';
 import { increment } from '../../features/page.slice';
+import { useGetAllQuestionsQuery } from '../../services/questions.service';
 
 type Props = {
   setChosenCategories: React.Dispatch<React.SetStateAction<string[]>>,
@@ -15,6 +16,7 @@ export const Filter: React.FC<Props> = ({
   setChosenCategories,
   chosenCategories,
 }) => {
+  const { data: questions } = useGetAllQuestionsQuery(); 
   const dispatch = useAppDispatch();
 
   const [isWarning, setIsWarning] = useState(false);
@@ -66,7 +68,7 @@ export const Filter: React.FC<Props> = ({
           key={category}
           onClick={() => {handleChooseCategory(category)}}
         >
-          {category}
+          {`${category}: ${questions?.rows.filter((q) => q.categoryName === category).length}`}
         </button>
         ))}
       </div>

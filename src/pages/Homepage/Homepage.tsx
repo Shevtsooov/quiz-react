@@ -24,8 +24,6 @@ export const Homepage: React.FC = () => {
     refetch();
   }, [questions, refetch]);
 
-  console.log(questions)
-
   const filteredQuestions = useMemo(() => filterQuestions(questions?.rows, chosenCategories), [chosenCategories, questions]);
   const readyQuestions = useMemo(() => getRandomQuestions(filteredQuestions, quantity), [filteredQuestions, quantity]);
 

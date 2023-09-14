@@ -225,9 +225,6 @@ export const AddNewQuestion = () => {
     try {
       if (shouldWeEdit) {
 
-        console.log('Question found');
-
-
         const editedQuestion = {
           id: editedQuestionId,
           ...newQuestion,
