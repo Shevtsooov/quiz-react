@@ -4,7 +4,7 @@ import { Question, Questions } from '../types/question';
 export const QuestionsApi = createApi({
   reducerPath: 'QuestionsApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://quiz-server-3co9.onrender.com'
+    baseUrl: 'https://api.quick-quiz.site'
   }),
   endpoints: (builder) => ({
     getAllQuestions: builder.query<Questions, void>({
