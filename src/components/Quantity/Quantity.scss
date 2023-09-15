@@ -8,15 +8,18 @@
   &__header {
     margin-bottom: 0;
     
+    transition: text-decoration-line, 0.5s;
+
     @media (max-width: 400px) {
       font-size: 20px;
     }
 
-      &--warning {
-        transition: background-color 0.5s;
-        background-color: #ffcbcb;
-        border-radius: 30px;
-      }
+    &--warning {
+      text-decoration-color: #ff006e;
+      text-decoration-line: underline;
+      text-decoration-thickness: 3px;
+      text-underline-offset: 7px;
+    }
   }
 
   &__categories {
