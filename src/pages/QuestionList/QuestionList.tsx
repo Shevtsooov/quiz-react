@@ -171,7 +171,10 @@ export const QuestionList: React.FC = () => {
             onClick={() => setShowModal(false)}
           />
           <p className='modal_window__notice'>
-            Ви дійсно бажаєте видалити це питання?
+            Ви дійсно хочете видалити це питання?
+          </p>
+          <p className='modal_window__current_question'>
+            {questionToDelete}
           </p>
           <input 
             type="password"

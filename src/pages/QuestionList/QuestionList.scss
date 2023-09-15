@@ -255,8 +255,6 @@
   flex-direction: column;
   justify-content: center;
 
-  width: 500px;
-  height: 250px;
   padding: 30px 40px;
   z-index: 22;
 
@@ -285,9 +283,17 @@
   }
 
   &__notice {
+    margin: 0;
     font-size: 20px;
-    margin-bottom: 25px;
     text-align: center;
+    font-weight: 600;
+  }
+
+  &__current_question {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #ffffff;
+    border-radius: 30px;
   }
 
   &__password {
@@ -325,6 +331,7 @@
 
     &--disabled {
       background-color: #848484;
+      cursor: not-allowed;
     }
   }
 }
