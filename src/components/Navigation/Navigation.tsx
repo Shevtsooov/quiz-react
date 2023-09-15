@@ -11,6 +11,7 @@ import { setCorrectAnswer } from '../../features/correctAnswer.slice';
 import { setQuery } from '../../features/query.slice';
 import { setFilteredCategory } from '../../features/filteredCategory.slice';
 import { setFilteredDifficulty } from '../../features/filteredDifficulty.slice';
+import { setEditedQuestionId } from '../../features/editedQuestionId.slice';
 
 export const Navigation = () => {
   const dispatch = useAppDispatch();
@@ -21,12 +22,14 @@ export const Navigation = () => {
       dispatch(setCorrectAnswer(null));
       dispatch(setChosenCategory(null));
       dispatch(setChosenDifficulty(null));
+      dispatch(setEditedQuestionId(null));
   }
 
   const refreshList = () => {
       dispatch(setQuery(''));
       dispatch(setFilteredCategory('Всі категорії'));
       dispatch(setFilteredDifficulty('Складність'));
+      dispatch(setEditedQuestionId(null));
   }
 
   return (
