@@ -88,21 +88,21 @@ export const QuestionList: React.FC = () => {
 
   const handleDifficulty = () => {
     refetch();
+    setShowAnswers([]);
+    setCurrentPage(1);
 
     if (filteredDifficulty === 'Складність') {
       dispatch(setFilteredDifficulty('Легко'));
-      setCurrentPage(1);
+      
       return;
     }
     if (filteredDifficulty === 'Легко') {
       dispatch(setFilteredDifficulty('Нормально'));
-      setCurrentPage(1);
 
       return;
     }
     if (filteredDifficulty === 'Нормально') {
       dispatch(setFilteredDifficulty('Складно'));
-      setCurrentPage(1);
 
       return;
     }
@@ -224,6 +224,7 @@ export const QuestionList: React.FC = () => {
         
         <Sorting 
           setCurrentPage={setCurrentPage}
+          setShowAnswers={setShowAnswers}
         />
           
         <button

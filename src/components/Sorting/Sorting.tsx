@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import './Sorting.scss';
 import { categoryNames } from '../../helpers/PossibleCategories';
 import classNames from 'classnames';
@@ -6,10 +6,14 @@ import { useAppDispatch, useAppSelector } from '../../app/store';
 import { setFilteredCategory } from '../../features/filteredCategory.slice';
 
 type Props = {
-  setCurrentPage: (page: number) => void
+  setCurrentPage: (page: number) => void,
+  setShowAnswers: Dispatch<SetStateAction<string[]>>,
 }
 
-export const Sorting: React.FC<Props> = ({ setCurrentPage }) => {
+export const Sorting: React.FC<Props> = ({
+  setCurrentPage,
+  setShowAnswers,
+}) => {
   const [droped, setDroped] = useState(false);
   const filteredCategory = useAppSelector(state => state.filteredCategory.value);
   const dispatch = useAppDispatch();
@@ -44,8 +48,10 @@ export const Sorting: React.FC<Props> = ({ setCurrentPage }) => {
 
   const handleOptionClick = (option: string) => {
     dispatch(setFilteredCategory(option));
+    
     setDroped(false);
     setCurrentPage(1);
+    setShowAnswers([]);
   };
 
   return (
