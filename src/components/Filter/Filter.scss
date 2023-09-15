@@ -3,11 +3,17 @@
 
   @media (max-width: 400px) {
     font-size: 16px;
-    // height: 320px;
   }
 
   &__header {
     margin-bottom: 0;
+    transition: background-color 0.5s;
+
+    &--warning {
+      background-color: #ffcbcb;
+      border-radius: 30px;
+      padding: 5px 10px;
+    }
     
     @media (max-width: 400px) {
       font-size: 20px;
@@ -45,21 +51,11 @@
 
     &--next {
       background-color: #6a5be2;
+      width: 150px;
     }
 
     &--chosen {
       background-color: #6a5be2;
-    }
-  }
-
-  &__warning {
-    color: #ff006e;
-    font-size: 0;
-    transition: font-size 0.8s;
-
-    &--visible {
-      font-size: 18px;
-      margin-top: 30px;
     }
   }
 }

@@ -55,7 +55,9 @@ export const Filter: React.FC<Props> = ({
   return (
     <div className="filterPage">
       <h2
-      className="filterPage__header"
+      className={cn('filterPage__header', {
+        'filterPage__header--warning': isWarning,
+      })}
       >
         Будь ласка, оберіть одну або декілька категорій:
       </h2>
@@ -78,13 +80,6 @@ export const Filter: React.FC<Props> = ({
       >
         Далі
       </button>
-      <p
-        className={cn('filterPage__warning', {
-          'filterPage__warning--visible': isWarning,
-        })}
-        >
-          Будь ласка, оберіть категорії
-        </p>
     </div>
   );
 }
