@@ -38,7 +38,9 @@ export const Quantity: React.FC = () => {
   return (
     <div className="quantityPage">
       <h2
-      className="quantityPage__header"
+        className={cn('quantityPage__header', {
+          'quantityPage__header--warning': isWarning,
+        })}
       >
         Оберіть кількість питань:
       </h2>
@@ -74,13 +76,6 @@ export const Quantity: React.FC = () => {
       >
         Почати
       </button>
-        <p
-        className={cn('quantityPage__warning', {
-          'quantityPage__warning--visible': isWarning,
-        })}
-        >
-          Будь ласка, зробіть вибір
-        </p>
     </div>
   );
 }

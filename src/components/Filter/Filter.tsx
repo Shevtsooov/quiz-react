@@ -42,9 +42,9 @@ export const Filter: React.FC = () => {
   return (
     <div className="filterPage">
       <h2
-      className={cn('filterPage__header', {
-        'filterPage__header--warning': isWarning,
-      })}
+        className={cn('filterPage__header', {
+          'filterPage__header--warning': isWarning,
+        })}
       >
         Будь ласка, оберіть одну або декілька категорій:
       </h2>
