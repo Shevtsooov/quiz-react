@@ -3,44 +3,31 @@ import React, { useState } from 'react';
 
 import cn from 'classnames';
 import { categoryNames } from '../../helpers/PossibleCategories';
-import { useAppDispatch } from '../../app/store';
-import { increment } from '../../features/page.slice';
+import { useAppDispatch, useAppSelector } from '../../app/store';
+import { setPage } from '../../features/page.slice';
 import { useGetAllQuestionsQuery } from '../../services/questions.service';
+import { filterGameCategories, setGameCategories } from '../../features/gameCategories.slice';
 
-type Props = {
-  setChosenCategories: React.Dispatch<React.SetStateAction<string[]>>,
-  chosenCategories: string[],
-}
-
-export const Filter: React.FC<Props> = ({
-  setChosenCategories,
-  chosenCategories,
-}) => {
-  const { data: questions } = useGetAllQuestionsQuery(); 
+export const Filter: React.FC = () => {
+  const { data: questions } = useGetAllQuestionsQuery();
+  const gameCategories = useAppSelector((state) => state.gameCategories.value);
   const dispatch = useAppDispatch();
 
   const [isWarning, setIsWarning] = useState(false);
 
   const handleChooseCategory = (chosenCategory: string) => {
 
-    if (chosenCategories.includes(chosenCategory)) {
-      setChosenCategories((prevState) => {
-        return prevState.filter((category: string) => (
-          category !== chosenCategory
-          ))
-      });
+    if (gameCategories.includes(chosenCategory)) {
+      dispatch(filterGameCategories(chosenCategory))
 
       return;
     }
 
-    setChosenCategories(prevState => ([
-      ...prevState,
-      chosenCategory,
-    ]))
+    dispatch(setGameCategories(chosenCategory));
   };
 
   const handleContinue = () => {
-    if (chosenCategories.length === 0) {
+    if (gameCategories.length === 0) {
       setIsWarning(true);
       setTimeout(() => {
         setIsWarning(false);
@@ -49,7 +36,7 @@ export const Filter: React.FC<Props> = ({
       return;
     }
 
-    dispatch(increment());
+    dispatch(setPage());
   }
 
   return (
@@ -65,7 +52,7 @@ export const Filter: React.FC<Props> = ({
         {categoryNames.map(category => (
           <button
           className={cn('filterPage__button', {
-            'filterPage__button--chosen': chosenCategories.includes(category),
+            'filterPage__button--chosen': gameCategories.includes(category),
           })}
           key={category}
           onClick={() => {handleChooseCategory(category)}}

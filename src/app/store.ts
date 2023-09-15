@@ -16,6 +16,9 @@ import { filteredDifficultyReducer } from '../features/filteredDifficulty.slice'
 import { queryReducer } from '../features/query.slice'
 import { editedQuestionIdReducer } from '../features/editedQuestionId.slice'
 import { passwordReducer } from '../features/password.slice'
+import { gameCategoriesReducer } from '../features/gameCategories.slice'
+import { gameQuantityReducer } from '../features/gameQuantity.slice '
+import { gameCorrectAnswersReducer } from '../features/gameCorrectAnswers.slice '
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +27,9 @@ export const store = configureStore({
     isCorrect: isCorrectReducer,
     isInCorrect: isInCorrectReducer,
     clickedAnswerIndex: clickedAnswerIndexReducer,
+    gameCategories: gameCategoriesReducer,
+    gameQuantity: gameQuantityReducer,
+    gameCorrectAnswers: gameCorrectAnswersReducer,
     
     editedQuestionId: editedQuestionIdReducer,
     title: titleReducer,

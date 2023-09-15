@@ -13,11 +13,14 @@ export const stepSlice = createSlice({
   name: 'step',
   initialState,
   reducers: {
-    increment: (state) => {
+    setStep: (state) => {
       state.value += 1
+    },
+    resetSteps: (state) => {
+      state.value = 0
     },
   },
 })
 
-export const { increment } = stepSlice.actions;
+export const { setStep, resetSteps } = stepSlice.actions;
 export const stepReducer = stepSlice.reducer;

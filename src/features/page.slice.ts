@@ -13,16 +13,14 @@ export const pageSlice = createSlice({
   name: 'page',
   initialState,
   reducers: {
-    increment: (state) => {
+    setPage: (state) => {
       state.value += 1
     },
-    clear: (state) => {
-      state = {
-        ...initialState
-      }
+    resetPage: (state) => {
+      state.value = 0
     },
   },
 })
 
-export const { increment, clear } = pageSlice.actions;
+export const { setPage, resetPage } = pageSlice.actions;
 export const pageReducer = pageSlice.reducer;
