@@ -10,6 +10,11 @@
   color: rgb(207, 207, 208);
   cursor: pointer;
 
+  @media (max-width: 400px) {
+    width: 42%;
+    margin-bottom: 10px;
+  }
+
   &__label {
     text-align: left;
     width: max-content;
@@ -41,6 +46,10 @@
       height: 18px;
       vertical-align: top;
       margin-top: -5px;
+
+      @media (max-width: 400px) {
+        margin-top: -2px;
+      }
     }
 
     &-items {

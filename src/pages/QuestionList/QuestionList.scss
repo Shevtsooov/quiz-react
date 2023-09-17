@@ -9,21 +9,44 @@
 
   margin-bottom: 100px;
 
+  @media (max-width: 400px) {
+    width: 95%;
+    font-size: 12px;
+    padding: 20px 15px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
   &__amount {
     color: #b8b8b8;
     font-size: 14px;
     margin-top: 5px;
     margin-bottom: 25px;
+
+    @media (max-width: 400px) {
+      margin-bottom: 10px;
+    }
   }
 
   &__filter {
     margin-bottom: 5px;
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    @media (max-width: 400px) {
+      font-size: 12px;
+    }
 
     &_input {
       position: relative;
       width: 65%;
       margin-right: 30px;
+
+      @media (max-width: 400px) {
+        width: 100%;
+        margin-bottom: 10px;
+      }
 
       &--field {
         width: 100%;
@@ -92,6 +115,11 @@
 
       transition: background-color 0.5s;
 
+      @media (max-width: 400px) {
+        width: 42%;
+        margin-bottom: 10px;
+      }
+
       &--easy {
         background-color: #16af05;
         color: #fff;
@@ -128,14 +156,22 @@
       padding-left: 5px;
     }
     
-      &_category {
+    &_category {
       width: 10%;
       text-align: center;
+
+      @media (max-width: 400px) {
+        display: none;
+      }
     }
     
     &_difficulty {
       width: 10%;
       text-align: center;
+      
+      @media (max-width: 400px) {
+        display: none;
+      }
     }
   }
 
@@ -156,7 +192,10 @@
       padding: 5px 90px 5px 5px;
       transition: height 0.5s;
 
-
+      @media (max-width: 400px) {
+        font-size: 14px;
+      }
+      
       &_text {
         padding: 0 50px 0 20px;
       }
@@ -224,12 +263,20 @@
       padding: 20px;
       vertical-align: top;
       text-align: center;
+
+      @media (max-width: 400px) {
+        display: none;
+      }
     }
 
     &_difficulty {
       padding: 20px;
       vertical-align: top;
       text-align: center;
+
+      @media (max-width: 400px) {
+        display: none;
+      }
 
       &--easy {
         color: #16af05;
