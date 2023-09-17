@@ -1,10 +1,16 @@
 .game {
   padding: 50px;
+
+  @media (max-width: 400px) {
+    font-size: 18px;
+  }
+
   &__progress {
-  height: 10px;
-  border-radius: 30px;
-  background-color: rgb(232, 232, 232);
-  margin-bottom: 25px;
+    height: 10px;
+    border-radius: 30px;
+    background-color: rgb(201, 199, 199);
+    margin-bottom: 25px;
+    margin-top: 15px;
 
     &--inner {
       height: 100%;
@@ -26,7 +32,9 @@
   }
 
   &__question_list {
+    width: 100%;
     list-style: none;
+    margin-bottom: 20px;
     padding: 0;
   }
 

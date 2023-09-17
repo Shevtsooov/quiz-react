@@ -69,6 +69,14 @@ export const Quantity: React.FC = () => {
         >
           15
         </button>
+        <button
+          className={cn('quantityPage__button', {
+            'quantityPage__button--chosen': gameQuantity === 20,
+          })}
+          onClick={() => {handleChooseQuantity(20)}}
+        >
+          20
+        </button>
       </div>
       <button
         className="quantityPage__button quantityPage__button--next"

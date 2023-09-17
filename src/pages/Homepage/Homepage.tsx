@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import { Filter } from '../../components/Filter/Filter';
 import { Quantity } from '../../components/Quantity/Quantity';
