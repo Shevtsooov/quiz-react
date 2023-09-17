@@ -1,5 +1,6 @@
 .form {
   width: 600px;
+  height: 100%;
   padding: 20px 40px 40px;
   margin: 20px auto;
 
@@ -331,8 +332,8 @@
   transform: translate(-50%, -50%);
 
   @media (max-width: 400px) {
-    height: 80%;
-    width: 95%;
+    height: 100%;
+    width: 94%;
     font-size: 10px;
     padding: 30px;
     margin-top: 30px;
@@ -355,6 +356,10 @@
 
   &_text {
     font-size: 36px;
+
+    @media (max-width: 400px) {
+      font-size: 30px;
+    }
 
     &--add_success {
       color: #00a627;
