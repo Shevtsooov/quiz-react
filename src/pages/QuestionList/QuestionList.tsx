@@ -60,7 +60,7 @@ export const QuestionList: React.FC = () => {
   }, [questions, refetch]);
 
   const handleSearch = (search: string) => {
-    dispatch(setQuery(search));
+    dispatch(setQuery(search.trim().toLowerCase()));
   }
 
   const handleClearQuery = () => {
