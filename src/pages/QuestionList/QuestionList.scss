@@ -1,3 +1,6 @@
+@import "../../styles/utils/colors.scss";
+@import "../../styles/utils/mixins.scss";
+
 .list {
   width: 80%;
   padding: 40px 40px;
@@ -5,11 +8,11 @@
   margin-top: 50px;
 
   border-radius: 30px;
-  background-color: #ffffff;
+  background-color: #fff;
 
   margin-bottom: 100px;
 
-  @media (max-width: 400px) {
+  @include onMobile {
     width: 95%;
     font-size: 12px;
     padding: 20px 15px;
@@ -18,7 +21,7 @@
   }
 
   &__amount {
-    color: #b8b8b8;
+    color: $main-grey;
     font-size: 14px;
     margin-top: 5px;
     margin-bottom: 25px;
@@ -30,7 +33,7 @@
     flex-direction: row;
     flex-wrap: wrap;
 
-    @media (max-width: 400px) {
+    @include onMobile {
       font-size: 12px;
     }
 
@@ -39,8 +42,9 @@
       width: 65%;
       margin-right: 30px;
 
-      @media (max-width: 400px) {
+      @include onMobile  {
         width: 100%;
+        margin-right: 0;
         margin-bottom: 10px;
       }
 
@@ -48,9 +52,11 @@
         width: 100%;
   
         padding: 10px 20px;
-  
+
+        font-size: 14px;
+        
         border-radius: 30px;
-        border: 1px solid rgb(228, 225, 225);
+        border: 1px solid $secondary-grey;
   
         outline: none;
         resize: none;
@@ -69,27 +75,12 @@
         color: #fff;
         cursor: pointer;
 
-        background-color: #ee9191;
+        background-color: $remove-btn-bg;
 
         &:hover {
-          background-color: #f33c3c;
+          background-color: $remove-btn-bg-hv;
         }
       }
-    }
-
-    &_category {
-      width: 15%;
-
-      padding: 10px 20px;
-      margin-bottom: 15px;
-
-      border-radius: 30px;
-      border: 1px solid rgb(228, 225, 225);
-
-      outline: none;
-      resize: none;
-
-      margin-right: 30px;
     }
 
     &_difficulty {
@@ -99,37 +90,38 @@
       margin-bottom: 15px;
 
       border-radius: 30px;
-      border: 1px solid rgb(222, 222, 222);
+      border: 1px solid $secondary-grey;
 
+      color: $main-grey;
+      
       background-color: #fff;
-      // text-align: left;
       outline: none;
       resize: none;
       cursor: pointer;
 
-      font-size: 12px;
+      font-size: 14px;
 
       transition: background-color 0.5s;
 
-      @media (max-width: 400px) {
+      @include onMobile {
         width: 42%;
         margin-bottom: 10px;
       }
 
       &--easy {
-        background-color: #16af05;
+        background-color: $easy-diff;
         color: #fff;
         font-weight: 600;
       }
 
       &--medium {
-        background-color: #d2d200;
+        background-color: $medium-diff;
         color: #fff;
         font-weight: 600;
       }
 
       &--hard {
-        background-color: #ce0000;
+        background-color: $hard-diff;
         color: #fff;
         font-weight: 600;
       }
@@ -156,7 +148,7 @@
       width: 10%;
       text-align: center;
 
-      @media (max-width: 400px) {
+      @include onMobile {
         display: none;
       }
     }
@@ -165,7 +157,7 @@
       width: 10%;
       text-align: center;
       
-      @media (max-width: 400px) {
+      @include onMobile {
         display: none;
       }
     }
@@ -183,12 +175,12 @@
       align-items: flex-start;
       height: fit-content;
       position: relative;
-      background-color: #f7f5f5;
+      background-color: $title-bg;
       border-radius: 40px;
       padding: 5px 90px 5px 5px;
       transition: height 0.5s;
 
-      @media (max-width: 400px) {
+      @include onMobile {
         font-size: 14px;
       }
       
@@ -260,7 +252,7 @@
       vertical-align: top;
       text-align: center;
 
-      @media (max-width: 400px) {
+      @include onMobile {
         display: none;
       }
     }
@@ -270,20 +262,20 @@
       vertical-align: top;
       text-align: center;
 
-      @media (max-width: 400px) {
+      @include onMobile {
         display: none;
       }
 
       &--easy {
-        color: #16af05;
+        color: $easy-diff;
       }
 
       &--medium {
-        color: #a9a906;
+        color: $medium-diff;
       }
 
       &--hard {
-        color: #ce0000;
+        color: $hard-diff;
       }
     }
   }
@@ -302,8 +294,8 @@
   z-index: 22;
 
   border-radius: 30px;
-  border: 2px solid rgb(252, 68, 68);
-  background-color: #eeeeee;
+  border: 2px solid $remove-btn-bg;
+  background-color: $modal-window-bg;
   transform: translate(-50%, -50%);
 
   &__close {
@@ -364,7 +356,7 @@
     
     color: #fff;
 
-    background-color: #c81010;
+    background-color: $modal-window-btn;
     border: 0;
     outline: none;
     cursor: pointer;
@@ -373,7 +365,7 @@
     transition: background-color 0.5s;
 
     &--disabled {
-      background-color: #848484;
+      background-color: $secondary-grey;
       cursor: not-allowed;
     }
   }

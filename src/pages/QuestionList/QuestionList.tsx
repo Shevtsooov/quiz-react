@@ -22,42 +22,50 @@ import { setPassword } from '../../features/password.slice';
 
 
 export const QuestionList: React.FC = () => {
+  // LOCAL STATE
+  
   const [currentQuestion, setCurrentQuestion] = useState<string>('');
   const [showAnswers, setShowAnswers] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false)
   const [questionToDelete, setQuestionToDelete] = useState('')
   const navigate = useNavigate();
+
+  // REDUX STATE
   
   const title = useAppSelector(state => state.title.value);
   const query = useAppSelector(state => state.query.value);
   const filteredDifficulty = useAppSelector(state => state.filteredDifficulty.value);
   const filteredCategory = useAppSelector(state => state.filteredCategory.value);
-
   const password = useAppSelector(state => state.password.value);
 
   const dispatch = useAppDispatch();
-  
-  const [deleteQuestion] = useDeleteQuestionMutation();
+
+  // SOME SERVICE VARIABLES
 
   const perPage = 20;
   const pass = 'Quiz2023';
+  
+  // RTK QUERY
 
+  const [deleteQuestion] = useDeleteQuestionMutation();
   const { data: questions, refetch } = useFindAndCountQuestionsQuery({
     limit: perPage,
     offset: (currentPage - 1) * perPage,
     query,
     categoryName: filteredCategory === 'Всі категорії'
-                  ? 'all'
-                  : filteredCategory,
+    ? 'all'
+    : filteredCategory,
     difficulty:  filteredDifficulty === 'Складність'
-                  ? 'all'
-                  : filteredDifficulty
+    ? 'all'
+    : filteredDifficulty
   });
 
   useEffect(() => {
       refetch();
   }, [questions, refetch]);
+
+  // SEARCH ACTIONS
 
   const handleSearch = (search: string) => {
     dispatch(setQuery(search.trim().toLowerCase()));
@@ -68,9 +76,7 @@ export const QuestionList: React.FC = () => {
     setShowAnswers([]);
   }
 
-  const handleAdd = (title: string) => {
-    setCurrentQuestion(title)
-  }
+  // SHOW BUTTONS AND ANSWERS ACTIONS
 
   const handleShowButtons = () => {
     setCurrentQuestion('');
@@ -85,6 +91,8 @@ export const QuestionList: React.FC = () => {
       }
     });
   }
+
+  // CHOOSE DIFFICULTY ACTION
 
   const handleDifficulty = () => {
     refetch();
@@ -110,6 +118,14 @@ export const QuestionList: React.FC = () => {
     dispatch(setFilteredDifficulty('Складність'));
   }
 
+  // HANDLE PAGE OF PAGINATION
+
+  const onPageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // QUESTION DELETION
+
   const handleShowModal = (title: string) => {
     setShowModal(true);
     setQuestionToDelete(title);
@@ -124,6 +140,12 @@ export const QuestionList: React.FC = () => {
     }
 
     setShowModal(false);
+  }
+
+  // QJUESTION EDITING
+
+  const handleAdd = (title: string) => {
+    setCurrentQuestion(title)
   }
 
   const handleEdit = (question: Question) => {
@@ -157,10 +179,6 @@ export const QuestionList: React.FC = () => {
   
     navigate('/new-question');
   }
-
-  const onPageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-  };
 
   return (
     <div className='list'>

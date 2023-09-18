@@ -1,3 +1,5 @@
+@import "../../styles/utils/colors.scss";
+
 .form {
   width: 600px;
   height: 100%;
@@ -5,7 +7,7 @@
   margin: 20px auto;
 
   border-radius: 30px;
-  background-color: #ffffff;
+  background-color: #fff;
 
   @media (max-width: 400px) {
     width: 95%;
@@ -29,14 +31,14 @@
   
       border: 0;
       border-radius: 30px;
-      background-color: #ffffff;
+      background-color: #fff;
       background-image: url('../../assets/images/info.svg');
       background-repeat: no-repeat;
       background-size: contain;
     }
 
     &_text {
-      color: #838785;
+      color: $main-grey;
       font-size: 14px;
     }
   }
@@ -46,14 +48,14 @@
     padding: 5px 5px 5px 10px;
     font-size: 12px;
     border-radius: 30px;
-    color: #838785;
+    color: $main-grey;
 
     @media (max-width: 400px) {
       width: 70%;
     }
 
     &--error {
-      background-color: #fdeded;
+      background-color: $error-bg;
     }
   }
 
@@ -70,7 +72,7 @@
       font-size: 18px;
       
       border-radius: 15px;
-      border: 1px solid rgb(228, 225, 225);
+      border: 1px solid $secondary-grey;
 
       resize: none;
       outline: none;
@@ -81,7 +83,7 @@
       }
 
       &--error {
-        background-color: #fdeded;
+        background-color: $error-bg;
       }
     }
 
@@ -91,7 +93,7 @@
       bottom: 25px;
 
       font-size: 12px;
-      color: #979a99;
+      color: $main-grey;
     }
 
     &_clear {
@@ -108,10 +110,10 @@
       border: 0;
       border-radius: 30px;
       
-      background-color: #b72c2cab;
+      background-color: $remove-btn-bg;
 
       &:hover {
-        background-color: rgb(183, 44, 44);
+        background-color: $remove-btn-bg-hv;
       }
 
       &--hidden {
@@ -128,7 +130,7 @@
         left: 20px;
         bottom: 20px;
 
-        color: #f1a7a7;
+        color: $error-text;
       }
     }
   }
@@ -193,7 +195,7 @@
     margin-bottom: 15px;
 
     border-radius: 30px;
-    border: 1px solid rgb(228, 225, 225);
+    border: 1px solid $secondary-grey;
 
     outline: none;
     resize: none;
@@ -203,7 +205,7 @@
     }
 
     &--error {
-      background-color: #fdeded;
+      background-color: $error-bg;
     }
   
     &_button {
@@ -221,10 +223,10 @@
       
       &-minus {
         color: #fff;
-        background-color: #b72c2cab;
+        background-color: $remove-btn-bg;
 
         &:hover {
-          background-color: rgb(183, 44, 44);
+          background-color: $remove-btn-bg-hv;
         }
 
         &--hidden {
@@ -234,10 +236,10 @@
 
       &-plus {
         color: #fff;
-        background-color: #13924e;
+        background-color: $add-btn-bg;
 
         &:hover {
-          background-color: #13924ec8;
+          background-color: $add-btn-bg-hv;
         }
 
         &--hidden {
@@ -246,11 +248,11 @@
       }
 
       &-clear {
-        color: #ffffff;
-        background-color: #838785;
+        color: #fff;
+        background-color: $main-grey;
 
         &:hover {
-          background-color: #838785a2;
+          background-color: $secondary-grey;
         }
 
         &--hidden {
@@ -271,10 +273,10 @@
       margin-right: 10px;
       margin-bottom: 10px;
       
-      border: 1px solid rgb(228, 225, 225);
+      border: 1px solid $secondary-grey;
       border-radius: 30px;
       
-      background-color: #ffffff;
+      background-color: #fff;
 
       &::first-letter {
         text-transform: capitalize;
@@ -299,15 +301,15 @@
     color: #fff;
     font-size: 20px;
 
-    border: 1px solid rgb(228, 225, 225);
+    border: 1px solid $secondary-grey;
     border-radius: 30px;
     
-    background-color: #00a627;
+    background-color: $add-btn-bg;
 
     transition: background-color 0.3s;
 
     &--disabled {
-      background-color: #00a6279a;
+      background-color: $add-btn-bg-hv;
     }
   }
 }
@@ -328,7 +330,7 @@
   z-index: 22;
 
   border-radius: 30px;
-  background-color: #ffffff;
+  background-color: #fff;
   transform: translate(-50%, -50%);
 
   @media (max-width: 400px) {
@@ -350,7 +352,7 @@
       background-image: url('../../assets/images/correct.svg');
     }
     &--error {
-      background-image: url('../../assets/images/incorrect.svg');
+      background-image: url('../../assets/images/remove.svg');
     }
   }
 
@@ -362,19 +364,19 @@
     }
 
     &--add_success {
-      color: #00a627;
+      color: $add-btn-bg;
     }
 
     &--update_success {
-      color: #00a627;
+      color: $add-btn-bg;
     }
 
     &--add_error {
-      color: #f68484;
+      color: $error-text;
     }
 
     &--add_error {
-      color: #f68484;
+      color: $error-text;
     }
   }
 }

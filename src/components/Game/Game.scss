@@ -1,3 +1,5 @@
+@import "../../styles/utils/colors.scss";
+
 .game {
   padding: 50px;
 
@@ -8,7 +10,7 @@
   &__progress {
     height: 10px;
     border-radius: 30px;
-    background-color: rgb(201, 199, 199);
+    background-color: $title-bg;
     margin-bottom: 25px;
     margin-top: 15px;
 
@@ -48,12 +50,12 @@
     transition: all 0.5s ease-in-out;
 
     &--clicked-correct {
-      background-color: #30d15b;
+      background-color: $add-btn-bg;
       color: #fff;
     }
 
     &--clicked-inCorrect {
-      background-color: #de5454;
+      background-color: $remove-btn-bg-hv;
       color: #fff;
     }
 

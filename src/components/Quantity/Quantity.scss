@@ -1,18 +1,16 @@
+@import "../../styles/utils/mixins.scss";
+
 .quantityPage {
   text-align: center;
+  font-size: 18px;
 
-  @media (max-width: 400px) {
+  @include onMobile {
     font-size: 16px;
   }
 
   &__header {
-    margin-bottom: 0;
-    
+    margin-bottom: 20px;
     transition: text-decoration-line, 0.5s;
-
-    @media (max-width: 400px) {
-      font-size: 16px;
-    }
 
     &--warning {
       text-decoration-color: #ff006e;
@@ -27,23 +25,33 @@
     justify-content: center;
     flex-wrap: wrap;
     gap: 15px;
-    margin: 20px;
+    margin-bottom: 20px;
+
+    @include onMobile {
+      gap: 10px;
+      margin-bottom: 20px;
+    }
   }
 
   &__button {
+    padding: 10px 20px;
+
+    color: #fff;
+    font-size: 18px;
     font-weight: bold;
     font-family: 'Nunito', sans-serif;
+
     border-radius: 30px;
     border: 0;
-    padding: 5px 15px;
-    font-size: 14px;
     background-color: darken(#ff006e, 3%);
-    color: #fff;
-    margin-top: 20px;
     
     cursor: pointer;
-
     transition: background 0.8s;
+
+    @include onMobile {
+      font-size: 14px;
+      padding: 5px 15px;
+    }
 
     &--next {
       background-color: #6a5be2;

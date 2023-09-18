@@ -1,20 +1,28 @@
+@import "../../styles/utils/mixins.scss";
+
 .filterPage {
   text-align: center;
+  font-size: 20px;
+  margin: 0 auto;
+  width: 95%;
 
-  
-  @media (max-width: 400px) {
+
+  @include onMobile {
     font-size: 10px;
-    width: 280px;
+    // width: 95%;
     margin: 0 auto;
   }
 
   &__header {
-    margin-bottom: 10px;
-    font-size: 12px;
+    font-size: 20px;
+    
+    margin-bottom: 20px;
+
     transition: text-decoration-line, 0.5s;
 
-    @media (max-width: 400px) {
+    @include onMobile {
       font-size: 18px;
+      margin-bottom: 10px;
     }
 
     &--warning {
@@ -31,26 +39,37 @@
     justify-content: center;
     flex-wrap: wrap;
     gap: 5px;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
+
+    
+    @include onMobile {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
   }
 
   &__button {
+    padding: 10px 20px;
+
+    color: #fff;
+    font-size: 16px;
     font-weight: bold;
     font-family: 'Nunito', sans-serif;
-    border-radius: 30px;
+
     border: 0;
-    padding: 8px 10px;
-    font-size: 15px;
+    border-radius: 30px;
     background-color: darken(#ff006e, 3%);
-    color: #fff;
+    
+    margin-right: 10px;
     margin-top: 5px;
     
     cursor: pointer;
-
     transition: background 0.8s;
 
-    @media (max-width: 400px) {
+    @include onMobile {
+      padding: 8px 10px;
       font-size: 12px;
+      margin-right: 5px;
     }
 
     &--next {

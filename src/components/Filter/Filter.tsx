@@ -57,7 +57,9 @@ export const Filter: React.FC = () => {
           key={category}
           onClick={() => {handleChooseCategory(category)}}
         >
-          {`${category}: ${questions?.rows.filter((q) => q.categoryName === category).length}`}
+          {`${category}: ${questions?.rows 
+            ? questions?.rows.filter((q) => q.categoryName === category).length
+            : '?'}`}
         </button>
         ))}
       </div>
