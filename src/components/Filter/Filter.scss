@@ -6,10 +6,9 @@
   margin: 0 auto;
   width: 95%;
 
-
   @include onMobile {
     font-size: 10px;
-    // width: 95%;
+    width: 95%;
     margin: 0 auto;
   }
 
@@ -79,6 +78,16 @@
 
     &--chosen {
       background-color: #6a5be2;
+    }
+  }
+
+  &__spinner {
+    display: block;
+    margin: 0 auto;
+    width: 300px;
+
+    @include onMobile {
+      width: 150px;
     }
   }
 }

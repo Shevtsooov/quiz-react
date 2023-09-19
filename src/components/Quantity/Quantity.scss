@@ -12,6 +12,10 @@
     margin-bottom: 20px;
     transition: text-decoration-line, 0.5s;
 
+    @include onMobile {
+      font-size: 18px;
+    }
+
     &--warning {
       text-decoration-color: #ff006e;
       text-decoration-line: underline;
@@ -50,7 +54,7 @@
 
     @include onMobile {
       font-size: 14px;
-      padding: 5px 15px;
+      padding: 10px 20px;
     }
 
     &--next {

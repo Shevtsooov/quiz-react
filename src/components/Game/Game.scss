@@ -1,9 +1,10 @@
 @import "../../styles/utils/colors.scss";
+@import "../../styles/utils/mixins.scss";
 
 .game {
   padding: 50px;
 
-  @media (max-width: 400px) {
+  @include onMobile {
     font-size: 18px;
   }
 
@@ -28,7 +29,7 @@
     margin: 0;
     margin-bottom: 30px;
 
-    @media (max-width: 400px) {
+    @include onMobile {
       font-size: 18px;
     }
   }
@@ -59,7 +60,7 @@
       color: #fff;
     }
 
-    @media (max-width: 400px) {
+    @include onMobile {
       font-size: 14px;
       padding: 10px;
       margin-bottom: 3px;

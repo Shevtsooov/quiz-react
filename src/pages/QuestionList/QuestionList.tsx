@@ -49,7 +49,7 @@ export const QuestionList: React.FC = () => {
   // RTK QUERY
 
   const [deleteQuestion] = useDeleteQuestionMutation();
-  const { data: questions, refetch } = useFindAndCountQuestionsQuery({
+  const { data: questions, refetch, isLoading, isSuccess } = useFindAndCountQuestionsQuery({
     limit: perPage,
     offset: (currentPage - 1) * perPage,
     query,
@@ -68,7 +68,7 @@ export const QuestionList: React.FC = () => {
   // SEARCH ACTIONS
 
   const handleSearch = (search: string) => {
-    dispatch(setQuery(search.trim().toLowerCase()));
+    dispatch(setQuery(search));
   }
 
   const handleClearQuery = () => {
@@ -180,6 +180,13 @@ export const QuestionList: React.FC = () => {
     navigate('/new-question');
   }
 
+  const isThereFilteredQuestions = (
+      query !== ''
+      || filteredCategory !== 'Всі категорії'
+      || filteredDifficulty !== 'Складність'
+    )
+    && questions?.rows.length === 0
+
   return (
     <div className='list'>
       {showModal && (
@@ -260,78 +267,96 @@ export const QuestionList: React.FC = () => {
         </button>
 
       </div>
+      {isLoading && (
+        <p className='list__warning'>
+          Хвилинку, вже підвантажуємо питання...
+        </p>)}
 
-      <table className='table'>
-        <thead className='table__head'>
-          <tr>
-            <td className='table__head_title'>Питання</td>
-            <td className='table__head_category'>Категорія</td>
-            <td className='table__head_difficulty'>Складність</td>
-          </tr>
-        </thead>
-        <tbody className='table__body'>
-          {questions?.rows.map(question => (
-            <tr className='table__body_row' key={question.title}>
-              <td
-                className='table__body_title'
-                onMouseEnter={() => handleAdd(question.title)}
-                onMouseLeave={handleShowButtons}
-              >
-                <div>
-                <p 
-                  className='table__body_title_text'
-                >
-                  {question.title}
-                </p>
-                {showAnswers.includes(question.title) && (
-                  <ul className='table__body_title_answers'>
-                    {question.answers.map(answer => (
-                    <li 
-                      className='table__body_title_answers--item'
-                      key={answer}
-                    >
-                      {answer}
-                    </li>
-                    ))}
-                  </ul>
-                )} 
-                </div>
-                
-                
-                {currentQuestion === question.title && (
-                <div className='table__body_buttons'>
-                  <button
-                    className='table__body_buttons--general table__body_buttons--answers'
-                    onClick={() => handleShowAnswers(question.title)}
-                  >
-                  </button>
-                  <button
-                    className='table__body_buttons--general  table__body_buttons--edit'
-                    onClick={() => handleEdit(question)}
-                  >
-                  </button>
-                  <button
-                    className='table__body_buttons--general  table__body_buttons--remove'
-                    onClick={() => handleShowModal(question.title)}
-                  >
-                  </button>
-                </div>
-                )}
-              </td>
-              <td className='table__body_category'>{question.categoryName}</td>
-              <td
-                className={classNames('table__body_difficulty', {
-                  'table__body_difficulty--easy': question.difficulty === 'Легко',
-                  'table__body_difficulty--medium': question.difficulty === 'Нормально',
-                  'table__body_difficulty--hard': question.difficulty === 'Складно'
-                })}
-              >
-                {question.difficulty}
-              </td>
-            </tr>
-          ))}
-        </tbody>
+      {isSuccess && (
+        <table className='table'>
+          {isThereFilteredQuestions
+            ? (
+              <p className='list__warning'>
+                На жаль, немає питань за вибраними фільтрами
+              </p>
+            )
+            : (
+              <>
+                <thead className='table__head'>
+                <tr>
+                  <td className='table__head_title'>Питання</td>
+                  <td className='table__head_category'>Категорія</td>
+                  <td className='table__head_difficulty'>Складність</td>
+                </tr>
+              </thead>
+                <tbody className='table__body'>
+                  {questions?.rows.map(question => (
+                    <tr className='table__body_row' key={question.title}>
+                      <td
+                        className='table__body_title'
+                        onMouseEnter={() => handleAdd(question.title)}
+                        onMouseLeave={handleShowButtons}
+                      >
+                        <div>
+                        <p 
+                          className='table__body_title_text'
+                        >
+                          {question.title}
+                        </p>
+                        {showAnswers.includes(question.title) && (
+                          <ul className='table__body_title_answers'>
+                            {question.answers.map(answer => (
+                            <li 
+                              className='table__body_title_answers--item'
+                              key={answer}
+                            >
+                              {answer}
+                            </li>
+                            ))}
+                          </ul>
+                        )} 
+                        </div>
+                        
+                        
+                        {currentQuestion === question.title && (
+                        <div className='table__body_buttons'>
+                          <button
+                            className='table__body_buttons--general table__body_buttons--answers'
+                            onClick={() => handleShowAnswers(question.title)}
+                          >
+                          </button>
+                          <button
+                            className='table__body_buttons--general  table__body_buttons--edit'
+                            onClick={() => handleEdit(question)}
+                          >
+                          </button>
+                          <button
+                            className='table__body_buttons--general  table__body_buttons--remove'
+                            onClick={() => handleShowModal(question.title)}
+                          >
+                          </button>
+                        </div>
+                        )}
+                      </td>
+                      <td className='table__body_category'>{question.categoryName}</td>
+                      <td
+                        className={classNames('table__body_difficulty', {
+                          'table__body_difficulty--easy': question.difficulty === 'Легко',
+                          'table__body_difficulty--medium': question.difficulty === 'Нормально',
+                          'table__body_difficulty--hard': question.difficulty === 'Складно'
+                        })}
+                      >
+                        {question.difficulty}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </>
+            )
+          }
       </table>
+      )}
+      
       {questions?.rows &&  questions.count > 20 && (
         <Pagination
           total={questions?.count}

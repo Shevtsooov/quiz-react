@@ -6,7 +6,7 @@
   padding: 40px 40px;
   margin: 0 auto;
   margin-top: 50px;
-
+  
   border-radius: 30px;
   background-color: #fff;
 
@@ -34,7 +34,17 @@
     flex-wrap: wrap;
 
     @include onMobile {
-      font-size: 12px;
+      width: 100%;
+      justify-content: center;
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+    
+    @include onTablet {
+      width: 100%;
+      justify-content: center;
+      margin-right: 0;
+      margin-bottom: 10px;
     }
 
     &_input {
@@ -47,13 +57,23 @@
         margin-right: 0;
         margin-bottom: 10px;
       }
+      
+      @include onTablet {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 15px;
+      }
+
+      @include mediumDesktop {
+        width: 63%;
+      }
 
       &--field {
         width: 100%;
   
-        padding: 10px 20px;
+        padding: 8px 20px;
 
-        font-size: 14px;
+        font-size: 16px;
         
         border-radius: 30px;
         border: 1px solid $secondary-grey;
@@ -86,7 +106,7 @@
     &_difficulty {
       width: 15%;
 
-      padding: 10px 20px;
+      padding: 8px 20px;
       margin-bottom: 15px;
 
       border-radius: 30px;
@@ -99,12 +119,18 @@
       resize: none;
       cursor: pointer;
 
-      font-size: 14px;
+      font-size: 16px;
 
       transition: background-color 0.5s;
 
       @include onMobile {
         width: 45%;
+        margin-bottom: 10px;
+      }
+
+      @include onTablet {
+        width: 45%;
+        margin-right: 0;
         margin-bottom: 10px;
       }
 
@@ -125,6 +151,16 @@
         color: #fff;
         font-weight: 600;
       }
+    }
+  }
+
+  &__warning {
+    font-size: 25px;
+    margin-bottom: 0;
+    text-align: center;
+
+    @include onMobile {
+      font-size: 18px;
     }
   }
 }

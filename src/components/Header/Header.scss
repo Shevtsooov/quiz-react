@@ -1,3 +1,5 @@
+@import "../../styles/utils/mixins.scss";
+
 .header {
   display: flex;
   flex-direction: row;
@@ -8,8 +10,8 @@
   height: 70px;
   background-color: #000640;
 
-  @media (max-width: 400px) {
-    padding: 0 30px;
+  @include onMobile {
+    padding: 0 15px;
   }
 
   &__logo {
