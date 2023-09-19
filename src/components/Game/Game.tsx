@@ -25,6 +25,8 @@ export const Game: React.FC<Props> = ({
   const dispatch = useAppDispatch();
 
   const onAnswerClick = (index: number) => {
+    dispatch(setClickedAnswerIndex(index));
+
     setTimeout(() => {
       dispatch(setStep());
       dispatch(setInCorrect(false));
@@ -39,7 +41,6 @@ export const Game: React.FC<Props> = ({
     }
 
     if (index !== question.correctAnswer) {
-      dispatch(setClickedAnswerIndex(index));
       dispatch(setInCorrect(true));
     }
   }
@@ -60,6 +61,7 @@ export const Game: React.FC<Props> = ({
             className={cn('game__question',{
               'game__question--clicked-correct': isCorrect && index === question.correctAnswer,
               'game__question--clicked-inCorrect': isInCorrect && index === clickedAnswerIndex,
+              'game__question--disabled': clickedAnswerIndex !== null
             })}
           >
             {answer}
