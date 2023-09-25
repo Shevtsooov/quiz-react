@@ -19,6 +19,7 @@ import { setQuery } from '../../features/query.slice';
 import { Pagination } from '../../components/Pagination/Pagination';
 import { setEditedQuestionId } from '../../features/editedQuestionId.slice';
 import { setPassword } from '../../features/password.slice';
+import { setFilteredCategory } from '../../features/filteredCategory.slice';
 
 
 export const QuestionList: React.FC = () => {
@@ -64,6 +65,20 @@ export const QuestionList: React.FC = () => {
   useEffect(() => {
       refetch();
   }, [questions, refetch]);
+
+  
+  const refreshList = () => {
+    dispatch(setQuery(''));
+    dispatch(setFilteredCategory('Всі категорії'));
+    dispatch(setFilteredDifficulty('Складність'));
+    dispatch(setEditedQuestionId(null));
+  }
+
+  useEffect(() => {
+    return () => {
+      refreshList();
+    }
+  }, []);
 
   // SEARCH ACTIONS
 

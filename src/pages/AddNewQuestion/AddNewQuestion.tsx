@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import cn from "classnames";
 import './AddNewQuestion.scss';
 import { categoryNames, possibleCategories } from "../../helpers/PossibleCategories";
@@ -20,6 +20,7 @@ import {
 import { setCorrectAnswer } from "../../features/correctAnswer.slice";
 import { setChosenCategory } from "../../features/chosenCategory.slice";
 import { setChosenDifficulty } from "../../features/chosenDifficulty.slice";
+import { setEditedQuestionId } from "../../features/editedQuestionId.slice";
 
 export const AddNewQuestion = () => {
 
@@ -67,6 +68,21 @@ export const AddNewQuestion = () => {
   const titleLimit = 120;
   const answerLimit = 60;
   const timeout = 2000;
+
+  const clearForm = () => {
+    dispatch(setTitle(''));
+    dispatch(setDefaultAnswers());
+    dispatch(setCorrectAnswer(null));
+    dispatch(setChosenCategory(null));
+    dispatch(setChosenDifficulty(null));
+    dispatch(setEditedQuestionId(null));
+}
+
+  useEffect(() => {
+    return () => {
+      clearForm();
+    }
+  }, []);
   
   // HANDLERS:
 
